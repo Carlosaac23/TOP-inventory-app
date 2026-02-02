@@ -8,10 +8,11 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "dev": "node --watch app.js"
+    "dev": "node --watch --env-file-if-exists=.env app.js"
   },
   "dependencies": {
-    "express": "^5.2.1"
+    "express": "^5.2.1",
+    "pg": "^8.18.0"
   },
   "devDependencies": {
     "oxfmt": "^0.28.0",
