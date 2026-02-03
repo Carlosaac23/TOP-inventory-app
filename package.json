@@ -11,6 +11,7 @@
     "dev": "node --watch --env-file-if-exists=.env app.js"
   },
   "dependencies": {
+    "ejs": "^4.0.1",
     "express": "^5.2.1",
     "pg": "^8.18.0"
   },
