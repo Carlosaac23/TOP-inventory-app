@@ -1,0 +1,49 @@
+brands
+- id
+- name
+- country
+- foundation
+scales
+- id
+- scale
+- ratio
+- track_width 
+trains
+- id
+- model
+- model_id (Which is it's something like 75848 instead of UUID for id)
+- description
+- price
+- category_id (FK → train_categories)
+- scale_id (FK → scales)
+- brand_id (FK → brands)
+- stock_quantity 
+train_categories
+- id
+- name 
+wagons
+- id
+- model
+- model_id
+- description
+- price
+- category_id (FK -> wagon_categories)
+- scale_id (FK -> scales)
+- brand_id (FK -> brands)
+- stock_quantity 
+wagon_categories
+- id
+- name 
+tracks
+- id
+- model
+- model_id
+- description
+- price
+- category_id (FK -> track_categories)
+- scale_id (FK -> scales)
+- brand_id (FK -> brands)
+- stock_quantity 
+track_categories
+- id
+- name
