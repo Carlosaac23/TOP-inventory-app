@@ -4,7 +4,7 @@ import { fileURLToPath } from 'url';
 
 import express from 'express';
 
-import { trainsRoutes } from './routes/trainRoutes.js';
+import { trainRoutes } from './routes/trainRoutes.js';
 
 const app = express();
 const PORT = 8080;
@@ -17,7 +17,7 @@ app.set('view engine', 'ejs');
 app.use(express.static(assetsPath));
 app.use(express.urlencoded({ extended: true }));
 
-app.use('/', trainsRoutes);
+app.use('/', trainRoutes);
 
 app.listen(PORT, error => {
   if (error) {
