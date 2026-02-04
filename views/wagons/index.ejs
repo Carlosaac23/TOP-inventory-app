@@ -7,20 +7,7 @@
   <link rel="stylesheet" href="/style.css">
 </head>
 <body>
-  <!-- Header -->
-  <header class="header">
-    <div class="nav-container">
-      <a href="/" class="logo">Railway Models</a>
-      <nav>
-        <ul class="nav-links">
-          <li><a href="/trains" class="active">Trains</a></li>
-          <li><a href="/wagons">Wagons</a></li>
-          <li><a href="/tracks">Tracks</a></li>
-          <li><a href="/brands">Brands</a></li>
-        </ul>
-      </nav>
-    </div>
-  </header>
+  <%- include('../partials/header.ejs') %>
 
   <!-- Main Content -->
   <main class="container">
@@ -32,33 +19,9 @@
 
     <!-- Filter Bar -->
     <div class="filter-bar">
-      <div>
-        <label class="filter-label" for="category">Category:</label>
-        <select id="category">
-          <option value="">All Categories</option>
-          <option value="steam">Steam Locomotive</option>
-          <option value="diesel">Diesel Locomotive</option>
-          <option value="electric">Electric Locomotive</option>
-        </select>
-      </div>
-      <div>
-        <label class="filter-label" for="scale">Scale:</label>
-        <select id="scale">
-          <option value="">All Scales</option>
-          <option value="ho">HO (1:87)</option>
-          <option value="n">N (1:160)</option>
-          <option value="o">O (1:48)</option>
-        </select>
-      </div>
-      <div>
-        <label class="filter-label" for="brand">Brand:</label>
-        <select id="brand">
-          <option value="">All Brands</option>
-          <option value="marklin">Märklin</option>
-          <option value="lego">LEGO</option>
-          <option value="hornby">Hornby</option>
-        </select>
-      </div>
+      <%- include('../partials/wagon-categories.ejs') %>
+      <%- include('../partials/scale-filter.ejs') %>
+      <%- include('../partials/brand-filter.ejs') %>
       <div style="margin-left: auto;">
         <input type="search" placeholder="Search trains..." />
       </div>
@@ -97,7 +60,7 @@
               </div>
               
               <button class="btn btn-primary" style="width: 100%; margin-top: 1rem;">
-                View Details
+                <a href="wagons/<%= wagon.id %>" style="text-decoration: none; color: inherit;">View Details</a>
               </button>
             </div>
           </article>
@@ -114,17 +77,6 @@
     <% } %>
   </main>
 
-  <!-- Footer -->
-  <footer class="footer">
-    <div class="footer-content">
-      <div class="footer-links">
-        <a href="/about">About Us</a>
-        <a href="/contact">Contact</a>
-        <a href="/shipping">Shipping Info</a>
-        <a href="/returns">Returns</a>
-      </div>
-      <p class="footer-text">© 2026 Railway Models. Built with passion for model trains.</p>
-    </div>
-  </footer>
+  <%- include('../partials/footer.ejs') %>
 </body>
 </html>
