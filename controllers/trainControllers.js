@@ -1,12 +1,22 @@
 import { getAllTrains, getTrainById } from '../db/trainQueries.js';
 
 export async function getAllTrainsController(req, res) {
-  const trains = await getAllTrains();
-  res.render('trains/index', { trains });
+  try {
+    const trains = await getAllTrains();
+
+    res.render('trains/index', { trains });
+  } catch (error) {
+    console.error(error);
+  }
 }
 
 export async function getTrainByIdController(req, res) {
-  const { trainID } = req.params;
-  const train = await getTrainById(trainID);
-  res.render('trains/infoTrain', { train });
+  try {
+    const { trainID } = req.params;
+    const train = await getTrainById(trainID);
+
+    res.render('trains/infoTrain', { train });
+  } catch (error) {
+    console.error(error);
+  }
 }
