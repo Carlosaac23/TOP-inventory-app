@@ -4,6 +4,7 @@ import { fileURLToPath } from 'url';
 
 import express from 'express';
 
+import { indexRoute } from './routes/indexRoute.js';
 import { trainRoutes } from './routes/trainRoutes.js';
 import { wagonRoutes } from './routes/wagonRoutes.js';
 
@@ -18,6 +19,7 @@ app.set('view engine', 'ejs');
 app.use(express.static(assetsPath));
 app.use(express.urlencoded({ extended: true }));
 
+app.use('/', indexRoute);
 app.use('/trains', trainRoutes);
 app.use('/wagons', wagonRoutes);
 
