@@ -3,10 +3,101 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Trains</title>
+  <title>Trains - Railway Model Inventory</title>
   <link rel="stylesheet" href="/style.css">
 </head>
 <body>
-  <%= trains.map(train => train.model) %>
+  <%- include('../partials/header.ejs') %>
+
+  <!-- Main Content -->
+  <main class="container">
+    <!-- Page Header -->
+    <div class="page-header">
+      <h1 class="page-title">🚂 Locomotive Collection</h1>
+      <p class="page-subtitle">Explore our premium selection of model trains</p>
+    </div>
+
+    <!-- Filter Bar -->
+    <div class="filter-bar">
+      <%- include('../partials/filter.ejs', {
+        id: 'category',
+        label: 'Categories',
+        allLabel: 'All Categories',
+        items: categories,
+        valueKey: 'id',
+        textKey: 'name'
+      }) %>
+      <%- include('../partials/filter.ejs', {
+        id: 'scale',
+        label: 'Scales',
+        allLabel: 'All Scales',
+        items: scales,
+        valueKey: 'id',
+        textKey: 'scale'
+      }) %>
+      <%- include('../partials/filter.ejs', {
+        id: 'brand',
+        label: 'Brands',
+        allLabel: 'All Brands',
+        items: brands,
+        valueKey: 'id',
+        textKey: 'name'
+      }) %>
+      <div style="margin-left: auto;">
+        <input type="search" placeholder="Search trains..." />
+      </div>
+    </div>
+
+    <!-- Product Grid -->
+    <% if (trains && trains.length > 0) { %>
+      <div class="product-grid">
+        <% trains.forEach(train => { %>
+          <article class="product-card">
+            <div class="product-image">
+              🚂
+              <% if (train.stock_quantity > 10) { %>
+                <span class="product-badge in-stock">In Stock</span>
+              <% } else if (train.stock_quantity > 0) { %>
+                <span class="product-badge low-stock">Low Stock</span>
+              <% } else { %>
+                <span class="product-badge">Out of Stock</span>
+              <% } %>
+            </div>
+            <div class="product-content">
+              <div class="product-category">Locomotive</div>
+              <h2 class="product-name"><%= train.model %></h2>
+              <p class="product-model">Model #<%= train.model_id %></p>
+              <p class="product-description"><%= train.description %></p>
+              
+              <div class="product-meta">
+                <span class="meta-item">🏭 Brand</span>
+                <span class="meta-item">📏 Scale</span>
+                <span class="meta-item">⚙️ Category</span>
+              </div>
+
+              <div class="product-footer">
+                <span class="product-price">$<%= train.price %></span>
+                <span class="product-stock"><%= train.stock_quantity %> available</span>
+              </div>
+              
+              <button class="btn btn-primary" style="width: 100%; margin-top: 1rem;">
+                <a href="trains/<%= train.id %>" style="text-decoration: none; color: inherit;">View Details</a>
+              </button>
+            </div>
+          </article>
+        <% }); %>
+      </div>
+    <% } else { %>
+      <!-- Empty State -->
+      <div class="empty-state">
+        <div class="empty-state-icon">🚂</div>
+        <h2 class="empty-state-title">No Trains Found</h2>
+        <p class="empty-state-message">We couldn't find any locomotives in our inventory. Check back soon!</p>
+        <a href="/" class="btn btn-secondary">Return Home</a>
+      </div>
+    <% } %>
+  </main>
+
+  <%- include('../partials/footer.ejs') %>
 </body>
 </html>

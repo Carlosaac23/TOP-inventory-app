@@ -11,3 +11,8 @@ export async function getTrainById(trainId) {
   ]);
   return rows[0];
 }
+
+export async function getAllTrainCategories() {
+  const { rows } = await pool.query('SELECT * FROM train_categories');
+  return rows;
+}

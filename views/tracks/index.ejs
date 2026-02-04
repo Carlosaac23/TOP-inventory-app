@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Wagons - Railway Model Inventory</title>
+  <title>Tracks - Railway Model Inventory</title>
   <link rel="stylesheet" href="/style.css">
 </head>
 <body>
@@ -13,13 +13,13 @@
   <main class="container">
     <!-- Page Header -->
     <div class="page-header">
-      <h1 class="page-title">🚃 Wagon Collection</h1>
-      <p class="page-subtitle">Explore our premium selection of model wagons</p>
+      <h1 class="page-title">🛤️ Track Collection</h1>
+      <p class="page-subtitle">Explore our premium selection of model tracks</p>
     </div>
 
     <!-- Filter Bar -->
     <div class="filter-bar">
-     <%- include('../partials/filter.ejs', {
+      <%- include('../partials/filter.ejs', {
         id: 'category',
         label: 'Categories',
         allLabel: 'All Categories',
@@ -49,15 +49,15 @@
     </div>
 
     <!-- Product Grid -->
-    <% if (wagons && wagons.length > 0) { %>
+    <% if (tracks && tracks.length > 0) { %>
       <div class="product-grid">
-        <% wagons.forEach(wagon => { %>
+        <% tracks.forEach(track => { %>
           <article class="product-card">
             <div class="product-image">
-              🚃
-              <% if (wagon.stock_quantity > 10) { %>
+              🛤️
+              <% if (track.stock_quantity > 10) { %>
                 <span class="product-badge in-stock">In Stock</span>
-              <% } else if (wagon.stock_quantity > 0) { %>
+              <% } else if (track.stock_quantity > 0) { %>
                 <span class="product-badge low-stock">Low Stock</span>
               <% } else { %>
                 <span class="product-badge">Out of Stock</span>
@@ -65,9 +65,9 @@
             </div>
             <div class="product-content">
               <div class="product-category">Locomotive</div>
-              <h2 class="product-name"><%= wagon.model %></h2>
-              <p class="product-model">Model #<%= wagon.model_id %></p>
-              <p class="product-description"><%= wagon.description %></p>
+              <h2 class="product-name"><%= track.model %></h2>
+              <p class="product-model">Model #<%= track.model_id %></p>
+              <p class="product-description"><%= track.description %></p>
               
               <div class="product-meta">
                 <span class="meta-item">🏭 Brand</span>
@@ -76,12 +76,12 @@
               </div>
 
               <div class="product-footer">
-                <span class="product-price">$<%= wagon.price %></span>
-                <span class="product-stock"><%= wagon.stock_quantity %> available</span>
+                <span class="product-price">$<%= track.price %></span>
+                <span class="product-stock"><%= track.stock_quantity %> available</span>
               </div>
               
               <button class="btn btn-primary" style="width: 100%; margin-top: 1rem;">
-                <a href="wagons/<%= wagon.id %>" style="text-decoration: none; color: inherit;">View Details</a>
+                <a href="tracks/<%= track.id %>" style="text-decoration: none; color: inherit;">View Details</a>
               </button>
             </div>
           </article>
@@ -90,8 +90,8 @@
     <% } else { %>
       <!-- Empty State -->
       <div class="empty-state">
-        <div class="empty-state-icon">🚃</div>
-        <h2 class="empty-state-title">No Wagons Found</h2>
+        <div class="empty-state-icon">🛤️</div>
+        <h2 class="empty-state-title">No Tracks Found</h2>
         <p class="empty-state-message">We couldn't find any locomotives in our inventory. Check back soon!</p>
         <a href="/" class="btn btn-secondary">Return Home</a>
       </div>
