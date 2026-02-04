@@ -1,5 +1,9 @@
 import { getAllBrands, getAllScales } from '../db/generalQueries.js';
-import { getAllTracks, getAllTrackCategories } from '../db/trackQueries.js';
+import {
+  getAllTracks,
+  getTrackById,
+  getAllTrackCategories,
+} from '../db/trackQueries.js';
 
 export async function getAllTracksController(req, res) {
   try {
@@ -12,5 +16,17 @@ export async function getAllTracksController(req, res) {
   } catch (error) {
     console.error(error);
     res.status(500).send('Error loading tracks');
+  }
+}
+
+export async function getTrackByIdController(req, res) {
+  try {
+    const { trackID } = req.params;
+    const track = await getTrackById(trackID);
+
+    res.render('tracks/infoTrack', { track });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Error getting track');
   }
 }
