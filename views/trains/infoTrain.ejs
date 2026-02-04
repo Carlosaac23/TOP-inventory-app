@@ -3,10 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Trains</title>
+  <title>Train</title>
   <link rel="stylesheet" href="/style.css">
 </head>
 <body>
-  <%= trains.map(train => train.model) %>
+  <div>
+    <h2>Model: <%= train.model %></h2>
+    <p>Model ID: <%= train.model_id %></p>
+    <p><strong>Price:</strong> $<%= train.price %></p>
+  </div>
 </body>
 </html>

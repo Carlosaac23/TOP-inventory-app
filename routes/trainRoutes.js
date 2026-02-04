@@ -1,7 +1,11 @@
 import { Router } from 'express';
 
-import { getAllTrainsController } from '../controllers/trainControllers.js';
+import {
+  getAllTrainsController,
+  getTrainByIdController,
+} from '../controllers/trainControllers.js';
 
 export const trainRoutes = Router();
 
-trainRoutes.get('/trains', getAllTrainsController);
+trainRoutes.get('/', getAllTrainsController);
+trainRoutes.get('/:trainID', getTrainByIdController);
