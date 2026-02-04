@@ -19,9 +19,30 @@
 
     <!-- Filter Bar -->
     <div class="filter-bar">
-      <%- include('../partials/wagon-categories.ejs') %>
-      <%- include('../partials/scale-filter.ejs') %>
-      <%- include('../partials/brand-filter.ejs') %>
+     <%- include('../partials/filter.ejs', {
+        id: 'category',
+        label: 'Categories',
+        allLabel: 'All Categories',
+        items: categories,
+        valueKey: 'id',
+        textKey: 'name'
+      }) %>
+      <%- include('../partials/filter.ejs', {
+        id: 'scale',
+        label: 'Scales',
+        allLabel: 'All Scales',
+        items: scales,
+        valueKey: 'id',
+        textKey: 'scale'
+      }) %>
+      <%- include('../partials/filter.ejs', {
+        id: 'brand',
+        label: 'Brands',
+        allLabel: 'All Brands',
+        items: brands,
+        valueKey: 'id',
+        textKey: 'name'
+      }) %>
       <div style="margin-left: auto;">
         <input type="search" placeholder="Search trains..." />
       </div>
