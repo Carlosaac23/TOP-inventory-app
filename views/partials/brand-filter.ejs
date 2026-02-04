@@ -1,0 +1,9 @@
+<div>
+  <label class="filter-label" for="brand">Brands:</label>
+  <select id="brand">
+    <option value="">All Brands</option>
+    <% brands.forEach(brand => { %> 
+      <option value="<%= brand.id %>"><%= brand.name %></option>
+    <% }); %>
+  </select>
+</div>
