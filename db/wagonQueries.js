@@ -11,3 +11,8 @@ export async function getWagonById(wagonID) {
   ]);
   return rows[0];
 }
+
+export async function getAllWagonCategories() {
+  const { rows } = await pool.query('SELECT * FROM wagon_categories');
+  return rows;
+}
