@@ -7,20 +7,7 @@
   <link rel="stylesheet" href="/style.css">
 </head>
 <body>
-  <!-- Header -->
-  <header class="header">
-    <div class="nav-container">
-      <a href="/" class="logo">Railway Models</a>
-      <nav>
-        <ul class="nav-links">
-          <li><a href="/trains">Trains</a></li>
-          <li><a href="/wagons">Wagons</a></li>
-          <li><a href="/tracks">Tracks</a></li>
-          <li><a href="/brands">Brands</a></li>
-        </ul>
-      </nav>
-    </div>
-  </header>
+  <%- include('./partials/header.ejs') %>
 
   <!-- Main Content -->
   <main class="container">
@@ -90,17 +77,6 @@
     </section>
   </main>
 
-  <!-- Footer -->
-  <footer class="footer">
-    <div class="footer-content">
-      <div class="footer-links">
-        <a href="/about">About Us</a>
-        <a href="/contact">Contact</a>
-        <a href="/shipping">Shipping Info</a>
-        <a href="/returns">Returns</a>
-      </div>
-      <p class="footer-text">© 2026 Railway Models. Built with passion for model trains.</p>
-    </div>
-  </footer>
+  <%- include('./partials/footer.ejs') %>
 </body>
 </html>
