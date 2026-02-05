@@ -33,7 +33,7 @@ export async function getWagonById(wagonID) {
   return rows[0];
 }
 
-export async function updateTrainById(wagonID, updates) {
+export async function updateWagonById(wagonID, updates) {
   const { model, model_id, description, price, stock_quantity } = updates;
   const { rows } = await pool.query(
     `UPDATE wagons
