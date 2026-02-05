@@ -3,15 +3,55 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Wagon</title>
+  <title><%= wagon.model %> - Wagon Details</title>
   <link rel="stylesheet" href="/style.css">
 </head>
 <body>
-  <div>
-    <h2>Model: <%= wagon.model %></h2>
-    <p><strong>Description:</strong> <%= wagon.description %></p>
-    <p>Model ID: <%= wagon.model_id %></p>
-    <p><strong>Price:</strong> $<%= wagon.price %></p>
-  </div>
+  <%- include('../partials/header.ejs') %>
+
+  <main class="container">
+    <div class="page-header">
+      <h1 class="page-title">🚃 <%= wagon.model %></h1>
+      <p class="page-subtitle">Model #<%= wagon.model_id %></p>
+    </div>
+
+    <article class="product-card">
+      <div class="product-image">
+        🚃
+        <% if (wagon.stock_quantity > 10) { %>
+          <span class="product-badge in-stock">In Stock</span>
+        <% } else if (wagon.stock_quantity > 0) { %>
+          <span class="product-badge low-stock">Low Stock</span>
+        <% } else { %>
+          <span class="product-badge">Out of Stock</span>
+        <% } %>
+      </div>
+
+      <div class="product-content">
+        <div class="product-category">Locomotive</div>
+        <h2 class="product-name"><%= wagon.model %></h2>
+        <p class="product-model">Model #<%= wagon.model_id %></p>
+        <p class="product-description"><%= wagon.description %></p>
+
+        <div class="product-meta">
+          <span class="meta-item">🏭 Brand ID: <%= wagon.brand_id %></span>
+          <span class="meta-item">📏 Scale ID: <%= wagon.scale_id %></span>
+          <span class="meta-item">⚙️ Category ID: <%= wagon.category_id %></span>
+        </div>
+
+        <div class="product-footer">
+          <span class="product-price">$<%= wagon.price %></span>
+          <span class="product-stock"><%= wagon.stock_quantity %> available</span>
+        </div>
+
+        <div style="margin-top: 1.5rem; display: flex; gap: 1rem; flex-wrap: wrap;">
+          <a class="btn btn-primary" href="/wagons">Back to Wagons</a>
+          <a class="btn btn-outline" href="/">Return Home</a>
+        </div>
+      </div>
+    </article>
+  </main>
+
+  <%- include('../partials/footer.ejs') %>
 </body>
 </html>
