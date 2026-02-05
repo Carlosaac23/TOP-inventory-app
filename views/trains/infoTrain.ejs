@@ -29,7 +29,12 @@
 
       <div class="product-content">
         <div class="product-category">Locomotive</div>
-        <h2 class="product-name"><%= train.model %></h2>
+        <div class="product-btns">
+          <h2 class="product-name"><%= train.model %></h2>
+          <button class="btn btn-secondary">
+            <a href="<%= train.id %>/update" style="text-decoration: none; color: inherit">Edit</a>
+          </button>
+        </div>
         <p class="product-model">Model #<%= train.model_id %></p>
         <p class="product-description"><%= train.description %></p>
 
