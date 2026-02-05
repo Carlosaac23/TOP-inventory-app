@@ -17,7 +17,7 @@ export async function getAllWagons({ category, scale, brand }) {
     where.push(`brand_id = $${values.length}`);
   }
 
-  let sql = 'SELECT * FROM trains';
+  let sql = 'SELECT * FROM wagons';
   if (where.length) {
     sql += ` WHERE ${where.join(' AND ')}`;
   }
@@ -30,6 +30,22 @@ export async function getWagonById(wagonID) {
   const { rows } = await pool.query('SELECT * FROM wagons WHERE id = $1', [
     wagonID,
   ]);
+  return rows[0];
+}
+
+export async function updateTrainById(wagonID, updates) {
+  const { model, model_id, description, price, stock_quantity } = updates;
+  const { rows } = await pool.query(
+    `UPDATE wagons
+     SET model = $1,
+         model_id = $2,
+         description = $3,
+         price = $4,
+         stock_quantity = $5
+     WHERE id = $6
+     RETURNING *`,
+    [model, model_id, description, price, stock_quantity, wagonID]
+  );
   return rows[0];
 }
 
