@@ -329,7 +329,8 @@ body {
 .product-image {
   width: 100%;
   height: 200px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  object-fit: contain;
+  background: var(--card-bg);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -439,6 +440,76 @@ body {
   color: var(--text-secondary);
 }
 
+/* Info Pages */
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: var(--spacing-lg);
+  margin-bottom: var(--spacing-xl);
+}
+
+.info-card {
+  background: var(--card-bg);
+  padding: var(--spacing-lg);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+}
+
+.info-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--primary);
+  margin-bottom: var(--spacing-sm);
+}
+
+.info-text {
+  font-size: 1.5rem;
+  color: var(--text-secondary);
+}
+
+.info-list {
+  background: var(--card-bg);
+  padding: var(--spacing-lg);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  margin-bottom: var(--spacing-xl);
+}
+
+.list {
+  padding-left: 2rem;
+  color: var(--text-secondary);
+  line-height: 1.8;
+}
+
+.cta-panel {
+  background: linear-gradient(
+    135deg,
+    var(--primary) 0%,
+    var(--primary-dark) 100%
+  );
+  color: white;
+  padding: var(--spacing-xl);
+  border-radius: var(--radius-md);
+  display: flex;
+  gap: var(--spacing-lg);
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  box-shadow: var(--shadow-md);
+  margin-bottom: var(--spacing-xl);
+}
+
+.cta-title {
+  font-size: 2.6rem;
+  font-weight: 700;
+  margin-bottom: var(--spacing-xs);
+}
+
+.cta-text {
+  font-size: 1.6rem;
+  opacity: 0.9;
+}
+
 /* Buttons */
 .btn {
   padding: var(--spacing-sm) var(--spacing-md);
@@ -520,6 +591,21 @@ body {
   color: white;
   padding: var(--spacing-xl) 0;
   margin-top: var(--spacing-xl);
+}
+
+/* Sticky footer for content-light pages */
+.page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.page .container {
+  flex: 1;
+}
+
+.page .footer {
+  margin-top: auto;
 }
 
 .footer-content {
