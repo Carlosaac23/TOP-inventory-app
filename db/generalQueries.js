@@ -25,3 +25,32 @@ export async function updateItemById(table, itemID, updates) {
   );
   return rows[0];
 }
+
+export async function addItem(table, itemData) {
+  const {
+    model,
+    model_id,
+    description,
+    category_id,
+    scale_id,
+    brand_id,
+    price,
+    stock_quantity,
+  } = itemData;
+  const { rows } = await pool.query(
+    `INSERT INTO ${table} (model, model_id, description, category_id, scale_id, brand_id, price, stock_quantity)
+     VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+     RETURNING *`,
+    [
+      model,
+      model_id,
+      description,
+      category_id,
+      scale_id,
+      brand_id,
+      price,
+      stock_quantity,
+    ]
+  );
+  return rows[0];
+}
