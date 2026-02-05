@@ -26,14 +26,14 @@ export async function getAllTrains({ category, scale, brand }) {
   return rows;
 }
 
-export async function getTrainById(trainId) {
+export async function getTrainById(trainID) {
   const { rows } = await pool.query('SELECT * FROM trains WHERE id = $1', [
-    trainId,
+    trainID,
   ]);
   return rows[0];
 }
 
-export async function updateTrainById(trainId, updates) {
+export async function updateTrainById(trainID, updates) {
   const { model, model_id, description, price, stock_quantity } = updates;
   const { rows } = await pool.query(
     `UPDATE trains
@@ -44,7 +44,7 @@ export async function updateTrainById(trainId, updates) {
          stock_quantity = $5
      WHERE id = $6
      RETURNING *`,
-    [model, model_id, description, price, stock_quantity, trainId]
+    [model, model_id, description, price, stock_quantity, trainID]
   );
   return rows[0];
 }
