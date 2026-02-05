@@ -1,8 +1,11 @@
-import { getAllScales, getAllBrands } from '../db/generalQueries.js';
+import {
+  getAllScales,
+  getAllBrands,
+  updateItemById,
+} from '../db/generalQueries.js';
 import {
   getAllWagons,
   getWagonById,
-  updateWagonById,
   getAllWagonCategories,
 } from '../db/wagonQueries.js';
 
@@ -66,7 +69,7 @@ export async function putUpdateFormController(req, res) {
     const { wagonID } = req.params;
     const { model, model_id, description, price, stock_quantity } = req.body;
 
-    const updatedWagon = await updateWagonById(wagonID, {
+    const updatedWagon = await updateItemById('wagons', wagonID, {
       model,
       model_id,
       description,

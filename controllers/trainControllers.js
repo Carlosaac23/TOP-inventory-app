@@ -1,8 +1,11 @@
-import { getAllScales, getAllBrands } from '../db/generalQueries.js';
+import {
+  getAllScales,
+  getAllBrands,
+  updateItemById,
+} from '../db/generalQueries.js';
 import {
   getAllTrains,
   getTrainById,
-  updateTrainById,
   getAllTrainCategories,
 } from '../db/trainQueries.js';
 
@@ -65,7 +68,7 @@ export async function putUpdateFormController(req, res) {
     const { trainID } = req.params;
     const { model, model_id, description, price, stock_quantity } = req.body;
 
-    const updatedTrain = await updateTrainById(trainID, {
+    const updatedTrain = await updateItemById('trains', trainID, {
       model,
       model_id,
       description,
