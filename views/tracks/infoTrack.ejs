@@ -29,7 +29,12 @@
 
       <div class="product-content">
         <div class="product-category">Track</div>
-        <h2 class="product-name"><%= track.model %></h2>
+        <div class="product-btns">
+          <h2 class="product-name"><%= track.model %></h2>
+          <button class="btn btn-secondary">
+            <a href="tracks/<%= track.id %>/update" style="text-decoration: none; color: inherit">Edit</a>
+          </button>
+        </div>
         <p class="product-model">Model #<%= track.model_id %></p>
         <p class="product-description"><%= track.description %></p>
 
