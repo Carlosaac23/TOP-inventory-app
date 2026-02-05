@@ -15,17 +15,22 @@
     <div class="page-header">
       <h1 class="page-title">🚃 Wagon Collection</h1>
       <p class="page-subtitle">Explore our premium selection of model wagons</p>
+      <div style="margin-top: 1.5rem;">
+        <a class="btn btn-primary" href="/wagons/add">Add Wagon</a>
+      </div>
     </div>
 
     <!-- Filter Bar -->
-    <div class="filter-bar">
-     <%- include('../partials/filter.ejs', {
+    <form class="filter-bar" method="GET" action="/wagons">
+      <div>
+      <%- include('../partials/filter.ejs', {
         id: 'category',
         label: 'Categories',
         allLabel: 'All Categories',
         items: categories,
         valueKey: 'id',
-        textKey: 'name'
+        textKey: 'name',
+        selectedValue: filters?.category
       }) %>
       <%- include('../partials/filter.ejs', {
         id: 'scale',
@@ -33,7 +38,8 @@
         allLabel: 'All Scales',
         items: scales,
         valueKey: 'id',
-        textKey: 'scale'
+        textKey: 'scale',
+        selectedValue: filters?.scale
       }) %>
       <%- include('../partials/filter.ejs', {
         id: 'brand',
@@ -41,12 +47,12 @@
         allLabel: 'All Brands',
         items: brands,
         valueKey: 'id',
-        textKey: 'name'
+        textKey: 'name',
+        selectedValue: filters?.brand
       }) %>
-      <div style="margin-left: auto;">
-        <input type="search" placeholder="Search trains..." />
       </div>
-    </div>
+      <button class="btn btn-secondary" type="submit">Apply</button>
+     </form>
 
     <!-- Product Grid -->
     <% if (wagons && wagons.length > 0) { %>
@@ -64,8 +70,13 @@
               <% } %>
             </div>
             <div class="product-content">
-              <div class="product-category">Locomotive</div>
-              <h2 class="product-name"><%= wagon.model %></h2>
+              <div class="product-category">Wagon</div>
+              <div class="product-btns">
+                <h2 class="product-name"><%= wagon.model %></h2>
+                <button class="btn btn-secondary">
+                  <a href="/wagons/<%= wagon.id %>/update" style="text-decoration: none; color: inherit">Edit</a>
+                </button>
+              </div>
               <p class="product-model">Model #<%= wagon.model_id %></p>
               <p class="product-description"><%= wagon.description %></p>
               
@@ -92,7 +103,7 @@
       <div class="empty-state">
         <div class="empty-state-icon">🚃</div>
         <h2 class="empty-state-title">No Wagons Found</h2>
-        <p class="empty-state-message">We couldn't find any locomotives in our inventory. Check back soon!</p>
+        <p class="empty-state-message">We couldn't find any wagons in our inventory. Check back soon!</p>
         <a href="/" class="btn btn-secondary">Return Home</a>
       </div>
     <% } %>

@@ -1,9 +1,14 @@
 <div>
   <label class="filter-label" for="<%= id %>"><%= label %>:</label>
-  <select id="<%= id %>">
+  <select id="<%= id %>" name="<%= id %>">
     <option value=""><%= allLabel %></option>
     <% items.forEach(item => { %>
-      <option value="<%= item[valueKey] %>"><%= item[textKey] %></option>
+      <option
+        value="<%= item[valueKey] %>"
+        <%= String(selectedValue || '') === String(item[valueKey]) ? 'selected' : '' %>
+      >
+        <%= item[textKey] %>
+      </option>
     <% }); %>
   </select>
 </div>

@@ -15,17 +15,22 @@
     <div class="page-header">
       <h1 class="page-title">🚂 Locomotive Collection</h1>
       <p class="page-subtitle">Explore our premium selection of model trains</p>
+      <div style="margin-top: 1.5rem;">
+        <a class="btn btn-primary" href="/trains/add">Add Train</a>
+      </div>
     </div>
 
     <!-- Filter Bar -->
-    <div class="filter-bar">
+     <form class="filter-bar" method="GET" action="/trains">
+      <div>
       <%- include('../partials/filter.ejs', {
         id: 'category',
         label: 'Categories',
         allLabel: 'All Categories',
         items: categories,
         valueKey: 'id',
-        textKey: 'name'
+        textKey: 'name',
+        selectedValue: filters?.category
       }) %>
       <%- include('../partials/filter.ejs', {
         id: 'scale',
@@ -33,7 +38,8 @@
         allLabel: 'All Scales',
         items: scales,
         valueKey: 'id',
-        textKey: 'scale'
+        textKey: 'scale',
+        selectedValue: filters?.scale
       }) %>
       <%- include('../partials/filter.ejs', {
         id: 'brand',
@@ -41,12 +47,12 @@
         allLabel: 'All Brands',
         items: brands,
         valueKey: 'id',
-        textKey: 'name'
+        textKey: 'name',
+        selectedValue: filters?.brand
       }) %>
-      <div style="margin-left: auto;">
-        <input type="search" placeholder="Search trains..." />
       </div>
-    </div>
+      <button class="btn btn-secondary" type="submit">Apply</button>
+     </form>
 
     <!-- Product Grid -->
     <% if (trains && trains.length > 0) { %>
@@ -65,7 +71,12 @@
             </div>
             <div class="product-content">
               <div class="product-category">Locomotive</div>
-              <h2 class="product-name"><%= train.model %></h2>
+              <div class="product-btns">
+                <h2 class="product-name"><%= train.model %></h2>
+                <button class="btn btn-secondary">
+                  <a href="/trains/<%= train.id %>/update" style="text-decoration: none; color: inherit">Edit</a>
+                </button>
+              </div>
               <p class="product-model">Model #<%= train.model_id %></p>
               <p class="product-description"><%= train.description %></p>
               

@@ -3,6 +3,7 @@ brands
 - name
 - country
 - foundation
+- logo_url
 scales
 - id
 - scale

@@ -3,14 +3,60 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Train</title>
+  <title><%= train.model %> - Train Details</title>
   <link rel="stylesheet" href="/style.css">
 </head>
 <body>
-  <div>
-    <h2>Model: <%= train.model %></h2>
-    <p>Model ID: <%= train.model_id %></p>
-    <p><strong>Price:</strong> $<%= train.price %></p>
-  </div>
+  <%- include('../partials/header.ejs') %>
+
+  <main class="container">
+    <div class="page-header">
+      <h1 class="page-title">🚂 <%= train.model %></h1>
+      <p class="page-subtitle">Model #<%= train.model_id %></p>
+    </div>
+
+    <article class="product-card">
+      <div class="product-image">
+        🚂
+        <% if (train.stock_quantity > 10) { %>
+          <span class="product-badge in-stock">In Stock</span>
+        <% } else if (train.stock_quantity > 0) { %>
+          <span class="product-badge low-stock">Low Stock</span>
+        <% } else { %>
+          <span class="product-badge">Out of Stock</span>
+        <% } %>
+      </div>
+
+      <div class="product-content">
+        <div class="product-category">Locomotive</div>
+        <div class="product-btns">
+          <h2 class="product-name"><%= train.model %></h2>
+          <button class="btn btn-secondary">
+            <a href="<%= train.id %>/update" style="text-decoration: none; color: inherit">Edit</a>
+          </button>
+        </div>
+        <p class="product-model">Model #<%= train.model_id %></p>
+        <p class="product-description"><%= train.description %></p>
+
+        <div class="product-meta">
+          <span class="meta-item">🏭 Brand ID: <%= train.brand_id %></span>
+          <span class="meta-item">📏 Scale ID: <%= train.scale_id %></span>
+          <span class="meta-item">⚙️ Category ID: <%= train.category_id %></span>
+        </div>
+
+        <div class="product-footer">
+          <span class="product-price">$<%= train.price %></span>
+          <span class="product-stock"><%= train.stock_quantity %> available</span>
+        </div>
+
+        <div style="margin-top: 1.5rem; display: flex; gap: 1rem; flex-wrap: wrap;">
+          <a class="btn btn-primary" href="/trains">Back to Trains</a>
+          <a class="btn btn-outline" href="/">Return Home</a>
+        </div>
+      </div>
+    </article>
+  </main>
+
+  <%- include('../partials/footer.ejs') %>
 </body>
 </html>
