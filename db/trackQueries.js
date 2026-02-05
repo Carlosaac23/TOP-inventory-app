@@ -17,7 +17,7 @@ export async function getAllTracks({ category, scale, brand }) {
     where.push(`brand_id = $${values.length}`);
   }
 
-  let sql = 'SELECT * FROM trains';
+  let sql = 'SELECT * FROM tracks';
   if (where.length) {
     sql += ` WHERE ${where.join(' AND ')}`;
   }
