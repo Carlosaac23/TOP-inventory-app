@@ -33,22 +33,6 @@ export async function getWagonById(wagonID) {
   return rows[0];
 }
 
-export async function updateWagonById(wagonID, updates) {
-  const { model, model_id, description, price, stock_quantity } = updates;
-  const { rows } = await pool.query(
-    `UPDATE wagons
-     SET model = $1,
-         model_id = $2,
-         description = $3,
-         price = $4,
-         stock_quantity = $5
-     WHERE id = $6
-     RETURNING *`,
-    [model, model_id, description, price, stock_quantity, wagonID]
-  );
-  return rows[0];
-}
-
 export async function getAllWagonCategories() {
   const { rows } = await pool.query('SELECT * FROM wagon_categories');
   return rows;
