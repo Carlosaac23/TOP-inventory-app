@@ -49,7 +49,11 @@ export async function getUpdateFormController(req, res) {
       return res.status(404).send('Train not found');
     }
 
-    res.render('forms/updateForm', { train });
+    res.render('forms/updateForm', {
+      title: 'Train',
+      item: train,
+      path: 'trains',
+    });
   } catch (error) {
     console.error(error);
     res.status(500).send('Error getting train');
