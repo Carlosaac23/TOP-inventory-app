@@ -107,7 +107,7 @@ export async function getAddFormController(req, res) {
   }
 }
 
-export async function postAddFormController(req, res) {
+export async function putAddFormController(req, res) {
   try {
     console.log('Objeto desde el form: ', req.body);
     const {
