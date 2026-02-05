@@ -5,11 +5,14 @@ import {
   getTrainByIdController,
   getUpdateFormController,
   putUpdateFormController,
+  getAddFormController,
+  postAddFormController,
 } from '../controllers/trainControllers.js';
 
 export const trainRoutes = Router();
 
 trainRoutes.get('/', getAllTrainsController);
+trainRoutes.route('/add').get(getAddFormController).post(postAddFormController);
 trainRoutes
   .route('/:trainID/update')
   .get(getUpdateFormController)
