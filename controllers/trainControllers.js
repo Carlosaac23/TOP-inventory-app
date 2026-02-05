@@ -2,6 +2,7 @@ import {
   getAllScales,
   getAllBrands,
   updateItemById,
+  addItem,
 } from '../db/generalQueries.js';
 import {
   getAllTrains,
@@ -84,5 +85,55 @@ export async function putUpdateFormController(req, res) {
   } catch (error) {
     console.error(error);
     return res.status(500).send('Error updating train');
+  }
+}
+
+export async function getAddFormController(req, res) {
+  try {
+    const categories = await getAllTrainCategories();
+    const scales = await getAllScales();
+    const brands = await getAllBrands();
+
+    res.render('forms/addForm', {
+      title: 'Train',
+      path: 'trains',
+      categories,
+      scales,
+      brands,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Error loading add train form');
+  }
+}
+
+export async function postAddFormController(req, res) {
+  try {
+    console.log('Objeto desde el form: ', req.body);
+    const {
+      model,
+      model_id,
+      description,
+      category_id,
+      scale_id,
+      brand_id,
+      price,
+      stock_quantity,
+    } = req.body;
+    await addItem('trains', {
+      model,
+      model_id,
+      description,
+      category_id: Number(category_id),
+      scale_id: Number(scale_id),
+      brand_id: Number(brand_id),
+      price: Number(price),
+      stock_quantity: Number(stock_quantity),
+    });
+
+    return res.redirect('/trains');
+  } catch (error) {
+    console.error(error);
+    return res.status(500).send('Error adding new train');
   }
 }
