@@ -8,11 +8,15 @@ import {
   getAddFormController,
   postAddFormController,
 } from '../controllers/trackControllers.js';
+import { adminPassword } from '../middleware/adminPassword.js';
 
 export const trackRoutes = Router();
 
 trackRoutes.get('/', getAllTracksController);
-trackRoutes.route('/add').get(getAddFormController).post(postAddFormController);
+trackRoutes
+  .route('/add')
+  .get(adminPassword, getAddFormController)
+  .post(postAddFormController);
 trackRoutes
   .route('/:trackID/update')
   .get(getUpdateFormController)
