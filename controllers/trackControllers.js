@@ -1,4 +1,8 @@
-import { getAllBrands, getAllScales } from '../db/generalQueries.js';
+import {
+  getAllBrands,
+  getAllScales,
+  updateItemById,
+} from '../db/generalQueries.js';
 import {
   getAllTracks,
   getTrackById,
@@ -36,5 +40,49 @@ export async function getTrackByIdController(req, res) {
   } catch (error) {
     console.error(error);
     res.status(500).send('Error getting track');
+  }
+}
+
+export async function getUpdateFormController(req, res) {
+  try {
+    const { trackID } = req.params;
+    const track = await getTrackById(trackID);
+
+    if (!track) {
+      return res.status(404).send('Track not found');
+    }
+
+    res.render('forms/updateForm', {
+      title: 'Track',
+      item: track,
+      path: 'tracks',
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Error getting track');
+  }
+}
+
+export async function putUpdateFormController(req, res) {
+  try {
+    const { trackID } = req.params;
+    const { model, model_id, description, price, stock_quantity } = req.body;
+
+    const updatedTrack = await updateItemById('tracks', trackID, {
+      model,
+      model_id,
+      description,
+      price: Number(price),
+      stock_quantity: Number(stock_quantity),
+    });
+
+    if (!updatedTrack) {
+      return res.status(404).send('Track not found');
+    }
+
+    return res.redirect(`/tracks/${trackID}`);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Error updating track');
   }
 }
