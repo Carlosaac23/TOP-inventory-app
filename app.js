@@ -4,7 +4,7 @@ import { fileURLToPath } from 'url';
 
 import express from 'express';
 
-import { indexRoute } from './routes/indexRoute.js';
+import { generalRoute } from './routes/generalRoutes.js';
 import { trackRoutes } from './routes/trackRoutes.js';
 import { trainRoutes } from './routes/trainRoutes.js';
 import { wagonRoutes } from './routes/wagonRoutes.js';
@@ -24,7 +24,7 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use('/', indexRoute);
+app.use('/', generalRoute);
 app.use('/trains', trainRoutes);
 app.use('/wagons', wagonRoutes);
 app.use('/tracks', trackRoutes);
