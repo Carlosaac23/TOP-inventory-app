@@ -28,8 +28,13 @@
       </div>
 
       <div class="product-content">
-        <div class="product-category">Locomotive</div>
-        <h2 class="product-name"><%= wagon.model %></h2>
+        <div class="product-category">Wagon</div>
+        <div class="product-btns">
+          <h2 class="product-name"><%= wagon.model %></h2>
+          <button class="btn btn-secondary">
+            <a href="<%= wagon.id %>/update" style="text-decoration: none; color: inherit">Edit</a>
+          </button>
+        </div>
         <p class="product-model">Model #<%= wagon.model_id %></p>
         <p class="product-description"><%= wagon.description %></p>
 
