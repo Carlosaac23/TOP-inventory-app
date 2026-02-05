@@ -276,6 +276,13 @@ body {
   gap: var(--spacing-md);
   flex-wrap: wrap;
   align-items: center;
+  justify-content: space-between;
+}
+
+.filter-bar div {
+  display: flex;
+  gap: var(--spacing-md);
+  align-items: center;
 }
 
 .filter-bar select,
