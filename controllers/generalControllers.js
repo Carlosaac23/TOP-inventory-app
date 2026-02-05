@@ -5,22 +5,22 @@ export function getHomepage(req, res) {
 }
 
 export function getAboutPage(req, res) {
-  res.render('about');
+  res.render('pages/about');
 }
 
 export function getShippingPage(req, res) {
-  res.render('shipping');
+  res.render('pages/shipping');
 }
 
 export function getContactPage(req, res) {
-  res.render('contact');
+  res.render('pages/contact');
 }
 
 export function getReturnsPage(req, res) {
-  res.render('returns');
+  res.render('pages/returns');
 }
 
 export async function getBrandsPage(req, res) {
   const brands = await getAllBrands();
-  res.render('brands', { brands });
+  res.render('pages/brands', { brands });
 }
