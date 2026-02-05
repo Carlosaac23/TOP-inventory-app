@@ -14,7 +14,6 @@ export async function getAllWagonsController(req, res) {
 
   try {
     const wagons = await getAllWagons({ category, scale, brand });
-    console.log('Wagons: ', wagons);
     const scales = await getAllScales();
     const brands = await getAllBrands();
     const categories = await getAllWagonCategories();
