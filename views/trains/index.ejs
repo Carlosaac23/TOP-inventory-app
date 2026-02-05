@@ -15,6 +15,9 @@
     <div class="page-header">
       <h1 class="page-title">🚂 Locomotive Collection</h1>
       <p class="page-subtitle">Explore our premium selection of model trains</p>
+      <div style="margin-top: 1.5rem;">
+        <a class="btn btn-primary" href="/trains/add">Add Train</a>
+      </div>
     </div>
 
     <!-- Filter Bar -->
@@ -71,7 +74,7 @@
               <div class="product-btns">
                 <h2 class="product-name"><%= train.model %></h2>
                 <button class="btn btn-secondary">
-                  <a href="trains/<%= train.id %>/update" style="text-decoration: none; color: inherit">Edit</a>
+                  <a href="/trains/<%= train.id %>/update" style="text-decoration: none; color: inherit">Edit</a>
                 </button>
               </div>
               <p class="product-model">Model #<%= train.model_id %></p>
