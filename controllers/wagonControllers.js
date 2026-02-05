@@ -2,6 +2,7 @@ import {
   getAllScales,
   getAllBrands,
   updateItemById,
+  addItem,
 } from '../db/generalQueries.js';
 import {
   getAllWagons,
@@ -84,5 +85,54 @@ export async function putUpdateFormController(req, res) {
   } catch (error) {
     console.error(error);
     res.status(500).send('Error updating wagon');
+  }
+}
+
+export async function getAddFormController(req, res) {
+  try {
+    const categories = await getAllWagonCategories();
+    const scales = await getAllScales();
+    const brands = await getAllBrands();
+
+    res.render('forms/addForm', {
+      title: 'Wagon',
+      path: 'wagons',
+      categories,
+      scales,
+      brands,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Error loading add wagon form');
+  }
+}
+
+export async function postAddFormController(req, res) {
+  try {
+    const {
+      model,
+      model_id,
+      description,
+      category_id,
+      scale_id,
+      brand_id,
+      price,
+      stock_quantity,
+    } = req.body;
+    await addItem('wagons', {
+      model,
+      model_id,
+      description,
+      category_id: Number(category_id),
+      scale_id: Number(scale_id),
+      brand_id: Number(brand_id),
+      price: Number(price),
+      stock_quantity: Number(stock_quantity),
+    });
+
+    return res.redirect('/wagons');
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Error adding new wagon');
   }
 }
