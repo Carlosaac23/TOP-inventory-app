@@ -38,23 +38,7 @@
         <p class="product-model">Model #<%= wagon.model_id %></p>
         <p class="product-description"><%= wagon.description %></p>
 
-        <div class="product-meta">
-          <span class="meta-item">
-            <% brands.forEach(brand => { %>
-              <p><%= brand.id === wagon.brand_id ? brand.name : '' %></p>
-            <% }) %>
-          </span>
-          <span class="meta-item">
-            <% scales.forEach(scale => { %>
-              <p><%= scale.id === wagon.scale_id ? scale.scale : '' %></p>
-            <% }) %>
-          </span>
-          <span class="meta-item">
-            <% categories.forEach(category => { %>
-              <p><%= category.id === wagon.category_id ? category.name : '' %></p>
-            <% }) %>
-          </span>
-        </div>
+        <%- include('../partials/meta-item.ejs', { item: wagon }) %>
 
         <div class="product-footer">
           <span class="product-price">$<%= wagon.price %></span>

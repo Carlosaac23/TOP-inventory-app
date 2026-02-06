@@ -80,23 +80,7 @@
               <p class="product-model">Model #<%= track.model_id %></p>
               <p class="product-description"><%= track.description %></p>
               
-              <div class="product-meta">
-                <span class="meta-item">
-                  <% brands.forEach(brand => { %>
-                   <p><%= brand.id === track.brand_id ? brand.name : '' %></p>
-                  <% }) %>
-                </span>
-                <span class="meta-item">
-                  <% scales.forEach(scale => { %>
-                    <p><%= scale.id === track.scale_id ? scale.scale : '' %></p>
-                  <% }) %>
-                </span>
-                <span class="meta-item">
-                  <% categories.forEach(category => { %>
-                    <p><%= category.id === track.category_id ? category.name : '' %></p>
-                  <% }) %>
-                </span>
-              </div>
+              <%- include('../partials/meta-item.ejs', { item: track }) %>
 
               <div class="product-footer">
                 <span class="product-price">$<%= track.price %></span>

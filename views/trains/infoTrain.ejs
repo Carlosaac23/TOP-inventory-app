@@ -38,23 +38,7 @@
         <p class="product-model">Model #<%= train.model_id %></p>
         <p class="product-description"><%= train.description %></p>
 
-        <div class="product-meta">
-          <span class="meta-item">
-            <% brands.forEach(brand => { %>
-              <p><%= brand.id === train.brand_id ? brand.name : '' %></p>
-            <% }) %>
-          </span>
-          <span class="meta-item">
-            <% scales.forEach(scale => { %>
-              <p><%= scale.id === train.scale_id ? scale.scale : '' %></p>
-            <% }) %>
-          </span>
-          <span class="meta-item">
-            <% categories.forEach(category => { %>
-              <p><%= category.id === train.category_id ? category.name : '' %></p>
-            <% }) %>
-          </span>
-        </div>
+        <%- include('../partials/meta-item.ejs', { item: train }) %>
 
         <div class="product-footer">
           <span class="product-price">$<%= train.price %></span>
