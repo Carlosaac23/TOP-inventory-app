@@ -17,7 +17,7 @@
 
     <article class="product-card">
       <div class="product-image">
-        🚂
+        <img class="info-image" src="<%= train.image_url %>" alt="<%= train.model %> scale model">
         <% if (train.stock_quantity > 10) { %>
           <span class="product-badge in-stock">In Stock</span>
         <% } else if (train.stock_quantity > 0) { %>
@@ -39,9 +39,21 @@
         <p class="product-description"><%= train.description %></p>
 
         <div class="product-meta">
-          <span class="meta-item">🏭 Brand ID: <%= train.brand_id %></span>
-          <span class="meta-item">📏 Scale ID: <%= train.scale_id %></span>
-          <span class="meta-item">⚙️ Category ID: <%= train.category_id %></span>
+          <span class="meta-item">
+            <% brands.forEach(brand => { %>
+              <p><%= brand.id === train.brand_id ? brand.name : '' %></p>
+            <% }) %>
+          </span>
+          <span class="meta-item">
+            <% scales.forEach(scale => { %>
+              <p><%= scale.id === train.scale_id ? scale.scale : '' %></p>
+            <% }) %>
+          </span>
+          <span class="meta-item">
+            <% categories.forEach(category => { %>
+              <p><%= category.id === train.category_id ? category.name : '' %></p>
+            <% }) %>
+          </span>
         </div>
 
         <div class="product-footer">
