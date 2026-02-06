@@ -36,8 +36,11 @@ export async function getTrainByIdController(req, res) {
   try {
     const { trainID } = req.params;
     const train = await getTrainById(trainID);
+    const scales = await getAllScales();
+    const brands = await getAllBrands();
+    const categories = await getAllTrainCategories();
 
-    res.render('trains/infoTrain', { train });
+    res.render('trains/infoTrain', { train, scales, brands, categories });
   } catch (error) {
     console.error(error);
     res.status(500).send('Error getting train');
