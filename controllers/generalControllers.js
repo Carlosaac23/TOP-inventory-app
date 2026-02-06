@@ -1,4 +1,4 @@
-import { getAllBrands } from '../db/generalQueries.js';
+import { getAllBrands } from '../db/queries.js';
 
 export function getHomepage(req, res) {
   res.render('index');

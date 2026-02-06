@@ -1,5 +1,43 @@
 import { pool } from './pool.js';
 
+export async function getAllItems(table, { category, scale, brand }) {
+  const values = [];
+  const where = [];
+
+  if (category) {
+    values.push(category);
+    where.push(`category_id = $${values.length}`);
+  }
+  if (scale) {
+    values.push(scale);
+    where.push(`scale_id = $${values.length}`);
+  }
+  if (brand) {
+    values.push(brand);
+    where.push(`brand_id = $${values.length}`);
+  }
+
+  let sql = `SELECT * FROM ${table}`;
+  if (where.length) {
+    sql += ` WHERE ${where.join(' AND ')}`;
+  }
+
+  const { rows } = await pool.query(sql, values);
+  return rows;
+}
+
+export async function getItemById(table, itemID) {
+  const { rows } = await pool.query(`SELECT * FROM ${table} WHERE id = $1`, [
+    itemID,
+  ]);
+  return rows[0];
+}
+
+export async function getAllItemCategories(item) {
+  const { rows } = await pool.query(`SELECT * FROM ${item}_categories`);
+  return rows;
+}
+
 export async function getAllScales() {
   const { rows } = await pool.query('SELECT * FROM scales');
   return rows;

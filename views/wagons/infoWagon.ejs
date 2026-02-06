@@ -18,13 +18,7 @@
     <article class="product-card">
       <div class="product-image">
         <img class="info-image" src="<%= wagon.image_url %>" alt="<%= wagon.model %> scale model">
-        <% if (wagon.stock_quantity > 10) { %>
-          <span class="product-badge in-stock">In Stock</span>
-        <% } else if (wagon.stock_quantity > 0) { %>
-          <span class="product-badge low-stock">Low Stock</span>
-        <% } else { %>
-          <span class="product-badge">Out of Stock</span>
-        <% } %>
+        <%- include('../partials/stock-span.ejs', { item: wagon }) %>
       </div>
 
       <div class="product-content">
@@ -38,7 +32,7 @@
         <p class="product-model">Model #<%= wagon.model_id %></p>
         <p class="product-description"><%= wagon.description %></p>
 
-        <%- include('../partials/meta-item.ejs', { item: wagon }) %>
+        <%- include('../partials/meta-items.ejs', { item: wagon }) %>
 
         <div class="product-footer">
           <span class="product-price">$<%= wagon.price %></span>
