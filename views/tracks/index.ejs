@@ -9,9 +9,7 @@
 <body>
   <%- include('../partials/header.ejs') %>
 
-  <!-- Main Content -->
   <main class="container">
-    <!-- Page Header -->
     <div class="page-header">
       <h1 class="page-title">🛤️ Track Collection</h1>
       <p class="page-subtitle">Explore our premium selection of model tracks</p>
@@ -20,54 +18,15 @@
       </div>
     </div>
 
-    <!-- Filter Bar -->
-    <form class="filter-bar" method="GET" action="/tracks">
-      <div>
-      <%- include('../partials/filter.ejs', {
-        id: 'category',
-        label: 'Categories',
-        allLabel: 'All Categories',
-        items: categories,
-        valueKey: 'id',
-        textKey: 'name',
-        selectedValue: filters?.category
-      }) %>
-      <%- include('../partials/filter.ejs', {
-        id: 'scale',
-        label: 'Scales',
-        allLabel: 'All Scales',
-        items: scales,
-        valueKey: 'id',
-        textKey: 'scale',
-        selectedValue: filters?.scale
-      }) %>
-      <%- include('../partials/filter.ejs', {
-        id: 'brand',
-        label: 'Brands',
-        allLabel: 'All Brands',
-        items: brands,
-        valueKey: 'id',
-        textKey: 'name',
-        selectedValue: filters?.brand
-      }) %>
-      </div>
-      <button class="btn btn-secondary" type="submit">Apply</button>
-     </form>
-
-    <!-- Product Grid -->
+    <%- include('../partials/filters-container.ejs', { path: 'tracks' }) %>
+    
     <% if (tracks && tracks.length > 0) { %>
       <div class="product-grid">
         <% tracks.forEach(track => { %>
           <article class="product-card">
             <div class="product-image">
               <img src="<%= track.image_url %>" alt="<%= track.model %> scale model">
-              <% if (track.stock_quantity > 10) { %>
-                <span class="product-badge in-stock">In Stock</span>
-              <% } else if (track.stock_quantity > 0) { %>
-                <span class="product-badge low-stock">Low Stock</span>
-              <% } else { %>
-                <span class="product-badge">Out of Stock</span>
-              <% } %>
+              <%- include('../partials/stock-span.ejs', { item: track }) %>
             </div>
             <div class="product-content">
               <div class="product-category">Track</div>
@@ -80,7 +39,7 @@
               <p class="product-model">Model #<%= track.model_id %></p>
               <p class="product-description"><%= track.description %></p>
               
-              <%- include('../partials/meta-item.ejs', { item: track }) %>
+              <%- include('../partials/meta-items.ejs', { item: track }) %>
 
               <div class="product-footer">
                 <span class="product-price">$<%= track.price %></span>
@@ -95,7 +54,6 @@
         <% }); %>
       </div>
     <% } else { %>
-      <!-- Empty State -->
       <div class="empty-state">
         <div class="empty-state-icon">🛤️</div>
         <h2 class="empty-state-title">No Tracks Found</h2>
