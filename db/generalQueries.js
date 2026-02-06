@@ -82,3 +82,7 @@ export async function addItem(table, itemData) {
   );
   return rows[0];
 }
+
+export async function deleteItemById(table, itemID) {
+  await pool.query(`DELETE FROM ${table} WHERE id = $1`, [itemID]);
+}
