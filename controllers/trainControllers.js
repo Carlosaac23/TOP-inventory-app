@@ -15,15 +15,15 @@ export async function getAllTrainsController(req, res) {
 
   try {
     const trains = await getAllTrains({ category, scale, brand });
+    const categories = await getAllTrainCategories();
     const scales = await getAllScales();
     const brands = await getAllBrands();
-    const categories = await getAllTrainCategories();
 
     res.render('trains/index', {
       trains,
+      categories,
       scales,
       brands,
-      categories,
       filters: { category, scale, brand },
     });
   } catch (error) {
@@ -36,9 +36,9 @@ export async function getTrainByIdController(req, res) {
   try {
     const { trainID } = req.params;
     const train = await getTrainById(trainID);
+    const categories = await getAllTrainCategories();
     const scales = await getAllScales();
     const brands = await getAllBrands();
-    const categories = await getAllTrainCategories();
 
     res.render('trains/infoTrain', { train, scales, brands, categories });
   } catch (error) {
