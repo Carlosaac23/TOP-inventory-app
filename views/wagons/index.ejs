@@ -60,7 +60,7 @@
         <% wagons.forEach(wagon => { %>
           <article class="product-card">
             <div class="product-image">
-              🚃
+              <img src="<%= wagon.image_url %>" alt="<%= wagon.model %> scale model">
               <% if (wagon.stock_quantity > 10) { %>
                 <span class="product-badge in-stock">In Stock</span>
               <% } else if (wagon.stock_quantity > 0) { %>
@@ -81,9 +81,21 @@
               <p class="product-description"><%= wagon.description %></p>
               
               <div class="product-meta">
-                <span class="meta-item">🏭 Brand</span>
-                <span class="meta-item">📏 Scale</span>
-                <span class="meta-item">⚙️ Category</span>
+                <span class="meta-item">
+                  <% brands.forEach(brand => { %>
+                   <p><%= brand.id === wagon.brand_id ? brand.name : '' %></p>
+                  <% }) %>
+                </span>
+                <span class="meta-item">
+                  <% scales.forEach(scale => { %>
+                    <p><%= scale.id === wagon.scale_id ? scale.scale : '' %></p>
+                  <% }) %>
+                </span>
+                <span class="meta-item">
+                  <% categories.forEach(category => { %>
+                    <p><%= category.id === wagon.category_id ? category.name : '' %></p>
+                  <% }) %>
+                </span>
               </div>
 
               <div class="product-footer">
