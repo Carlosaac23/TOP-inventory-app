@@ -3,6 +3,7 @@ import {
   getAllBrands,
   updateItemById,
   addItem,
+  deleteItemById,
 } from '../db/generalQueries.js';
 import {
   getAllTrains,
@@ -159,5 +160,16 @@ export async function postAddFormController(req, res) {
   } catch (error) {
     console.error(error);
     return res.status(500).send('Error adding new train');
+  }
+}
+
+export async function deleteTrainController(req, res) {
+  try {
+    const { trainID } = req.params;
+    await deleteItemById('trains', trainID);
+    return res.redirect('/trains');
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Error deleting train');
   }
 }

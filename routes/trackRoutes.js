@@ -7,6 +7,7 @@ import {
   putUpdateFormController,
   getAddFormController,
   postAddFormController,
+  deleteTrackController,
 } from '../controllers/trackControllers.js';
 import { adminPassword } from '../middleware/adminPassword.js';
 
@@ -22,3 +23,4 @@ trackRoutes
   .get(getUpdateFormController)
   .put(putUpdateFormController);
 trackRoutes.get('/:trackID', getTrackByIdController);
+trackRoutes.delete('/:trackID/delete', deleteTrackController);

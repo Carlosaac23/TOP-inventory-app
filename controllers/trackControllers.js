@@ -3,6 +3,7 @@ import {
   getAllScales,
   updateItemById,
   addItem,
+  deleteItemById,
 } from '../db/generalQueries.js';
 import {
   getAllTracks,
@@ -159,5 +160,16 @@ export async function postAddFormController(req, res) {
   } catch (error) {
     console.error(error);
     res.status(500).send('Error adding new track');
+  }
+}
+
+export async function deleteTrackController(req, res) {
+  try {
+    const { trackID } = req.params;
+    await deleteItemById('tracks', trackID);
+    return res.redirect('/tracks');
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Error deleting track');
   }
 }
