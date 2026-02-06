@@ -15,15 +15,15 @@ export async function getAllWagonsController(req, res) {
 
   try {
     const wagons = await getAllWagons({ category, scale, brand });
+    const categories = await getAllWagonCategories();
     const scales = await getAllScales();
     const brands = await getAllBrands();
-    const categories = await getAllWagonCategories();
 
     res.render('wagons/index', {
       wagons,
+      categories,
       scales,
       brands,
-      categories,
       filters: { category, scale, brand },
     });
   } catch (error) {
@@ -36,8 +36,11 @@ export async function getWagonByIdController(req, res) {
   try {
     const { wagonID } = req.params;
     const wagon = await getWagonById(wagonID);
+    const categories = await getAllWagonCategories();
+    const scales = await getAllScales();
+    const brands = await getAllBrands();
 
-    res.render('wagons/infoWagon', { wagon });
+    res.render('wagons/infoWagon', { wagon, scales, brands, categories });
   } catch (error) {
     console.error(error);
     res.status(500).send('Error getting wagon');
@@ -48,6 +51,9 @@ export async function getUpdateFormController(req, res) {
   try {
     const { wagonID } = req.params;
     const wagon = await getWagonById(wagonID);
+    const categories = await getAllWagonCategories();
+    const scales = await getAllScales();
+    const brands = await getAllBrands();
 
     if (!wagon) {
       return res.status(404).send('Wagon not found');
@@ -57,6 +63,9 @@ export async function getUpdateFormController(req, res) {
       title: 'Wagon',
       item: wagon,
       path: 'wagons',
+      categories,
+      scales,
+      brands,
     });
   } catch (error) {
     console.error(error);
@@ -67,14 +76,28 @@ export async function getUpdateFormController(req, res) {
 export async function putUpdateFormController(req, res) {
   try {
     const { wagonID } = req.params;
-    const { model, model_id, description, price, stock_quantity } = req.body;
+    const {
+      model,
+      model_id,
+      description,
+      category_id,
+      scale_id,
+      brand_id,
+      price,
+      stock_quantity,
+      image_url,
+    } = req.body;
 
     const updatedWagon = await updateItemById('wagons', wagonID, {
       model,
       model_id,
       description,
+      category_id: Number(category_id),
+      scale_id: Number(scale_id),
+      brand_id: Number(brand_id),
       price: Number(price),
       stock_quantity: Number(stock_quantity),
+      image_url,
     });
 
     if (!updatedWagon) {
@@ -118,6 +141,7 @@ export async function postAddFormController(req, res) {
       brand_id,
       price,
       stock_quantity,
+      image_url,
     } = req.body;
     await addItem('wagons', {
       model,
@@ -128,6 +152,7 @@ export async function postAddFormController(req, res) {
       brand_id: Number(brand_id),
       price: Number(price),
       stock_quantity: Number(stock_quantity),
+      image_url,
     });
 
     return res.redirect('/wagons');
