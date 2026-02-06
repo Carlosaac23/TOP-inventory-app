@@ -48,6 +48,9 @@ export async function getUpdateFormController(req, res) {
   try {
     const { trainID } = req.params;
     const train = await getTrainById(trainID);
+    const categories = await getAllTrainCategories();
+    const scales = await getAllScales();
+    const brands = await getAllBrands();
 
     if (!train) {
       return res.status(404).send('Train not found');
@@ -57,6 +60,9 @@ export async function getUpdateFormController(req, res) {
       title: 'Train',
       item: train,
       path: 'trains',
+      categories,
+      scales,
+      brands,
     });
   } catch (error) {
     console.error(error);
@@ -67,14 +73,28 @@ export async function getUpdateFormController(req, res) {
 export async function putUpdateFormController(req, res) {
   try {
     const { trainID } = req.params;
-    const { model, model_id, description, price, stock_quantity } = req.body;
+    const {
+      model,
+      model_id,
+      description,
+      category_id,
+      scale_id,
+      brand_id,
+      price,
+      stock_quantity,
+      image_url,
+    } = req.body;
 
     const updatedTrain = await updateItemById('trains', trainID, {
       model,
       model_id,
       description,
+      category_id: Number(category_id),
+      scale_id: Number(scale_id),
+      brand_id: Number(brand_id),
       price: Number(price),
       stock_quantity: Number(stock_quantity),
+      image_url,
     });
 
     if (!updatedTrain) {
@@ -118,6 +138,7 @@ export async function postAddFormController(req, res) {
       brand_id,
       price,
       stock_quantity,
+      image_url,
     } = req.body;
     await addItem('trains', {
       model,
@@ -128,6 +149,7 @@ export async function postAddFormController(req, res) {
       brand_id: Number(brand_id),
       price: Number(price),
       stock_quantity: Number(stock_quantity),
+      image_url,
     });
 
     return res.redirect('/trains');
