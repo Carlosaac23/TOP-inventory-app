@@ -1,22 +1,20 @@
 import {
+  getAllItems,
+  getItemById,
+  getAllItemCategories,
   getAllScales,
   getAllBrands,
   updateItemById,
   addItem,
   deleteItemById,
-} from '../db/generalQueries.js';
-import {
-  getAllTrains,
-  getTrainById,
-  getAllTrainCategories,
-} from '../db/trainQueries.js';
+} from '../db/queries.js';
 
 export async function getAllTrainsController(req, res) {
   const { category, scale, brand } = req.query;
 
   try {
-    const trains = await getAllTrains({ category, scale, brand });
-    const categories = await getAllTrainCategories();
+    const trains = await getAllItems('trains', { category, scale, brand });
+    const categories = await getAllItemCategories('train');
     const scales = await getAllScales();
     const brands = await getAllBrands();
 
@@ -36,8 +34,8 @@ export async function getAllTrainsController(req, res) {
 export async function getTrainByIdController(req, res) {
   try {
     const { trainID } = req.params;
-    const train = await getTrainById(trainID);
-    const categories = await getAllTrainCategories();
+    const train = await getItemById('trains', trainID);
+    const categories = await getAllItemCategories('train');
     const scales = await getAllScales();
     const brands = await getAllBrands();
 
@@ -51,8 +49,8 @@ export async function getTrainByIdController(req, res) {
 export async function getUpdateFormController(req, res) {
   try {
     const { trainID } = req.params;
-    const train = await getTrainById(trainID);
-    const categories = await getAllTrainCategories();
+    const train = await getItemById('trains', trainID);
+    const categories = await getAllItemCategories('train');
     const scales = await getAllScales();
     const brands = await getAllBrands();
 
@@ -114,7 +112,7 @@ export async function putUpdateFormController(req, res) {
 
 export async function getAddFormController(req, res) {
   try {
-    const categories = await getAllTrainCategories();
+    const categories = await getAllItemCategories('train');
     const scales = await getAllScales();
     const brands = await getAllBrands();
 
