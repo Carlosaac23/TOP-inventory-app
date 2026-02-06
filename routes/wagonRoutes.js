@@ -15,8 +15,8 @@ export const wagonRoutes = Router();
 wagonRoutes.get('/', getAllWagonsController);
 wagonRoutes
   .route('/add')
-  .get(adminPassword, getAddFormController)
-  .post(postAddFormController);
+  .get(getAddFormController)
+  .post(adminPassword, postAddFormController);
 wagonRoutes
   .route('/:wagonID/update')
   .get(getUpdateFormController)

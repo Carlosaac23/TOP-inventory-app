@@ -15,8 +15,8 @@ export const trackRoutes = Router();
 trackRoutes.get('/', getAllTracksController);
 trackRoutes
   .route('/add')
-  .get(adminPassword, getAddFormController)
-  .post(postAddFormController);
+  .get(getAddFormController)
+  .post(adminPassword, postAddFormController);
 trackRoutes
   .route('/:trackID/update')
   .get(getUpdateFormController)
