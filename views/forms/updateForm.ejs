@@ -89,10 +89,18 @@
         </div>
       </div>
 
-      <div class="form-actions">
-        <button class="btn btn-outline" type="submit">Save Changes</button>
-        <a class="btn btn-primary" href="/<%= path %>">Cancel</a>
+      <div class="form-actions edit">
+        <div>
+          <button class="btn btn-outline" type="submit">Save Changes</button>
+          <a class="btn btn-primary" href="/<%= path %>">Cancel</a>
+        </div>
+        <div class="danger-zone">
+          <p>Danger Zone</p>
+          <button class="btn btn-danger" form="delete-item-form" onclick="return confirm('Are you sure you wan to delete <%= item.model %>')" type="submit">Delete</button>
+        </div>
       </div>
+    </form>
+    <form id="delete-item-form" action="/<%= path %>/<%= item.id %>/delete?_method=DELETE" method="POST">
     </form>
   </main>
 
