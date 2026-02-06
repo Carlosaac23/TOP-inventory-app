@@ -60,7 +60,7 @@
         <% tracks.forEach(track => { %>
           <article class="product-card">
             <div class="product-image">
-              🛤️
+              <img src="<%= track.image_url %>" alt="<%= track.model %> scale model">
               <% if (track.stock_quantity > 10) { %>
                 <span class="product-badge in-stock">In Stock</span>
               <% } else if (track.stock_quantity > 0) { %>
@@ -81,9 +81,21 @@
               <p class="product-description"><%= track.description %></p>
               
               <div class="product-meta">
-                <span class="meta-item">🏭 Brand</span>
-                <span class="meta-item">📏 Scale</span>
-                <span class="meta-item">⚙️ Category</span>
+                <span class="meta-item">
+                  <% brands.forEach(brand => { %>
+                   <p><%= brand.id === track.brand_id ? brand.name : '' %></p>
+                  <% }) %>
+                </span>
+                <span class="meta-item">
+                  <% scales.forEach(scale => { %>
+                    <p><%= scale.id === track.scale_id ? scale.scale : '' %></p>
+                  <% }) %>
+                </span>
+                <span class="meta-item">
+                  <% categories.forEach(category => { %>
+                    <p><%= category.id === track.category_id ? category.name : '' %></p>
+                  <% }) %>
+                </span>
               </div>
 
               <div class="product-footer">

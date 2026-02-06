@@ -17,7 +17,7 @@
 
     <article class="product-card">
       <div class="product-image">
-        🛤️
+        <img class="info-image" src="<%= track.image_url %>" alt="<%= track.model %> scale model">
         <% if (track.stock_quantity > 10) { %>
           <span class="product-badge in-stock">In Stock</span>
         <% } else if (track.stock_quantity > 0) { %>
@@ -32,16 +32,28 @@
         <div class="product-btns">
           <h2 class="product-name"><%= track.model %></h2>
           <button class="btn btn-secondary">
-            <a href="tracks/<%= track.id %>/update" style="text-decoration: none; color: inherit">Edit</a>
+            <a href="<%= track.id %>/update" style="text-decoration: none; color: inherit">Edit</a>
           </button>
         </div>
         <p class="product-model">Model #<%= track.model_id %></p>
         <p class="product-description"><%= track.description %></p>
 
         <div class="product-meta">
-          <span class="meta-item">🏭 Brand ID: <%= track.brand_id %></span>
-          <span class="meta-item">📏 Scale ID: <%= track.scale_id %></span>
-          <span class="meta-item">⚙️ Category ID: <%= track.category_id %></span>
+          <span class="meta-item">
+            <% brands.forEach(brand => { %>
+              <p><%= brand.id === track.brand_id ? brand.name : '' %></p>
+            <% }) %>
+          </span>
+          <span class="meta-item">
+            <% scales.forEach(scale => { %>
+              <p><%= scale.id === track.scale_id ? scale.scale : '' %></p>
+            <% }) %>
+          </span>
+          <span class="meta-item">
+            <% categories.forEach(category => { %>
+              <p><%= category.id === track.category_id ? category.name : '' %></p>
+            <% }) %>
+          </span>
         </div>
 
         <div class="product-footer">
