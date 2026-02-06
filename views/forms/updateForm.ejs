@@ -33,6 +33,42 @@
         </div>
 
         <div class="form-field">
+          <label class="form-label" for="category_id">Category</label>
+          <select class="form-select" name="category_id" id="category_id" required>
+            <option value="" disabled>Select a category</option>
+            <% categories.forEach(category => { %>
+              <option value="<%= category.id %>" <%= category.id === item.category_id ? 'selected' : '' %>>
+                <%= category.name %>
+              </option>
+            <% }) %>
+          </select>
+        </div>
+
+         <div class="form-field">
+          <label class="form-label" for="scale_id">Scale</label>
+          <select class="form-select" name="scale_id" id="scale_id" required>
+            <option value="" disabled>Select a scale</option>
+            <% scales.forEach(scale => { %>
+              <option value="<%= scale.id %>" <%= scale.id === item.scale_id ? 'selected' : '' %>>
+                <%= scale.scale %>
+              </option>
+            <% }) %>
+          </select>
+        </div>
+
+        <div class="form-field">
+          <label class="form-label" for="brand_id">Brand</label>
+          <select class="form-select" name="brand_id" id="brand_id" required>
+            <option value="" disabled>Select a brand</option>
+            <% brands.forEach(brand => { %>
+              <option value="<%= brand.id %>" <%= brand.id === item.brand_id ? 'selected' : '' %>>
+                <%= brand.name %>
+              </option>
+            <% }) %>
+          </select>
+        </div>
+
+        <div class="form-field">
           <label class="form-label" for="price">Price</label>
           <input class="form-input" type="number" name="price" id="price" step="0.01" min="0" value="<%= item.price %>" required>
         </div>
@@ -40,6 +76,16 @@
         <div class="form-field">
           <label class="form-label" for="stock_quantity">Stock Quantity</label>
           <input class="form-input" type="number" name="stock_quantity" id="stock_quantity" min="0" value="<%= item.stock_quantity %>" required>
+        </div>
+
+        <div class="form-field">
+          <label class="form-label" for="adminPassword">Admin Password</label>
+          <input class="form-input" type="password" name="adminPassword" id="adminPassword" required>
+        </div>
+
+        <div class="form-field form-field--full">
+          <label class="form-label" for="image_url">Image URL</label>
+          <input class="form-input" type="text" name="image_url" id="image_url" value="<%= item.image_url %>">
         </div>
       </div>
 

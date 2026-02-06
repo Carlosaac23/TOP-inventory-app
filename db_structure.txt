@@ -1,50 +1,66 @@
-brands
-- id
-- name
-- country
-- foundation
-- logo_url
-scales
-- id
-- scale
-- ratio
-- track_width 
-trains
-- id
-- model
-- model_id (Which is it's something like 75848 instead of UUID for id)
-- description
-- price
-- category_id (FK → train_categories)
-- scale_id (FK → scales)
-- brand_id (FK → brands)
-- stock_quantity 
-train_categories
-- id
-- name 
-wagons
-- id
-- model
-- model_id
-- description
-- price
-- category_id (FK -> wagon_categories)
-- scale_id (FK -> scales)
-- brand_id (FK -> brands)
-- stock_quantity 
-wagon_categories
-- id
-- name 
-tracks
-- id
-- model
-- model_id
-- description
-- price
-- category_id (FK -> track_categories)
-- scale_id (FK -> scales)
-- brand_id (FK -> brands)
-- stock_quantity 
-track_categories
-- id
-- name
+-- brands
+CREATE TABLE brands (
+  id INT PRIMARY KEY NOT NULL,
+  name VARCHAR(30) NOT NULL,
+  country VARCHAR(20),
+  foundation INT,
+  logo_url TEXT
+);
+-- scales
+CREATE TABLE brands (
+  id INT PRIMARY KEY NOT NULL,
+  scale VARCHAR(10) NOT NULL,
+  ratio VARCHAR(10),
+  track_width VARCHAR(10)
+);
+-- trains
+CREATE TABLE trains (
+  id INT PRIMARY KEY NOT NULL,
+  model VARCHAR(30) NOT NULL,
+  model_id INT NOT NULL,
+  description TEXT,
+  category_id INT REFERENCES train_categories(id) NOT NULL,
+  scale_id INT REFERENCES scales(id) NOT NULL,
+  brand_id INT REFERENCES brands(id) NOT NULL,
+  stock_quantity INT NOT NULL,
+  image_url TEXT
+);
+-- train_categories
+CREATE TABLE train_categories (
+  id INT PRIMARY KEY NOT NULL,
+  name VARCHAR(20) NOT NULL
+);
+-- wagons
+CREATE TABLE wagons (
+  id INT PRIMARY KEY NOT NULL,
+  model VARCHAR(30) NOT NULL,
+  model_id INT NOT NULL,
+  description TEXT,
+  category_id INT REFERENCES wagon_categories(id) NOT NULL,
+  scale_id INT REFERENCES scales(id) NOT NULL,
+  brand_id INT REFERENCES brands(id) NOT NULL,
+  stock_quantity INT NOT NULL,
+  image_url TEXT
+);
+-- wagon_categories
+CREATE TABLE wagon_categories (
+  id INT PRIMARY KEY NOT NULL,
+  name VARCHAR(20) NOT NULL
+);
+-- tracks
+CREATE TABLE tracks (
+  id INT PRIMARY KEY NOT NULL,
+  model VARCHAR(30) NOT NULL,
+  model_id INT NOT NULL,
+  description TEXT,
+  category_id INT REFERENCES track_categories(id) NOT NULL,
+  scale_id INT REFERENCES scales(id) NOT NULL,
+  brand_id INT REFERENCES brands(id) NOT NULL,
+  stock_quantity INT NOT NULL,
+  image_url TEXT
+);
+-- track_categories
+CREATE TABLE track_categories (
+  id INT PRIMARY KEY NOT NULL,
+  name VARCHAR(20) NOT NULL
+);

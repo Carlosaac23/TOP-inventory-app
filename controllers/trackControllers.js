@@ -15,9 +15,9 @@ export async function getAllTracksController(req, res) {
 
   try {
     const tracks = await getAllTracks({ category, scale, brand });
+    const categories = await getAllTrackCategories();
     const scales = await getAllScales();
     const brands = await getAllBrands();
-    const categories = await getAllTrackCategories();
 
     res.render('tracks/index', {
       tracks,
@@ -36,8 +36,11 @@ export async function getTrackByIdController(req, res) {
   try {
     const { trackID } = req.params;
     const track = await getTrackById(trackID);
+    const categories = await getAllTrackCategories();
+    const scales = await getAllScales();
+    const brands = await getAllBrands();
 
-    res.render('tracks/infoTrack', { track });
+    res.render('tracks/infoTrack', { track, categories, scales, brands });
   } catch (error) {
     console.error(error);
     res.status(500).send('Error getting track');
@@ -48,6 +51,9 @@ export async function getUpdateFormController(req, res) {
   try {
     const { trackID } = req.params;
     const track = await getTrackById(trackID);
+    const categories = await getAllTrackCategories();
+    const scales = await getAllScales();
+    const brands = await getAllBrands();
 
     if (!track) {
       return res.status(404).send('Track not found');
@@ -57,6 +63,9 @@ export async function getUpdateFormController(req, res) {
       title: 'Track',
       item: track,
       path: 'tracks',
+      categories,
+      scales,
+      brands,
     });
   } catch (error) {
     console.error(error);
@@ -67,14 +76,28 @@ export async function getUpdateFormController(req, res) {
 export async function putUpdateFormController(req, res) {
   try {
     const { trackID } = req.params;
-    const { model, model_id, description, price, stock_quantity } = req.body;
+    const {
+      model,
+      model_id,
+      description,
+      category_id,
+      scale_id,
+      brand_id,
+      price,
+      stock_quantity,
+      image_url,
+    } = req.body;
 
     const updatedTrack = await updateItemById('tracks', trackID, {
       model,
       model_id,
       description,
+      category_id: Number(category_id),
+      scale_id: Number(scale_id),
+      brand_id: Number(brand_id),
       price: Number(price),
       stock_quantity: Number(stock_quantity),
+      image_url,
     });
 
     if (!updatedTrack) {
@@ -118,6 +141,7 @@ export async function postAddFormController(req, res) {
       brand_id,
       price,
       stock_quantity,
+      image_url,
     } = req.body;
     await addItem('tracks', {
       model,
@@ -128,6 +152,7 @@ export async function postAddFormController(req, res) {
       brand_id: Number(brand_id),
       price: Number(price),
       stock_quantity: Number(stock_quantity),
+      image_url,
     });
 
     return res.redirect('/tracks');

@@ -60,7 +60,7 @@
         <% wagons.forEach(wagon => { %>
           <article class="product-card">
             <div class="product-image">
-              🚃
+              <img src="<%= wagon.image_url %>" alt="<%= wagon.model %> scale model">
               <% if (wagon.stock_quantity > 10) { %>
                 <span class="product-badge in-stock">In Stock</span>
               <% } else if (wagon.stock_quantity > 0) { %>
@@ -80,11 +80,7 @@
               <p class="product-model">Model #<%= wagon.model_id %></p>
               <p class="product-description"><%= wagon.description %></p>
               
-              <div class="product-meta">
-                <span class="meta-item">🏭 Brand</span>
-                <span class="meta-item">📏 Scale</span>
-                <span class="meta-item">⚙️ Category</span>
-              </div>
+              <%- include('../partials/meta-item.ejs', { item: wagon }) %>
 
               <div class="product-footer">
                 <span class="product-price">$<%= wagon.price %></span>

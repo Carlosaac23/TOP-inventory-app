@@ -60,7 +60,7 @@
         <% trains.forEach(train => { %>
           <article class="product-card">
             <div class="product-image">
-              🚂
+              <img src="<%= train.image_url %>" alt="<%= train.model %> scale model">
               <% if (train.stock_quantity > 10) { %>
                 <span class="product-badge in-stock">In Stock</span>
               <% } else if (train.stock_quantity > 0) { %>
@@ -80,11 +80,7 @@
               <p class="product-model">Model #<%= train.model_id %></p>
               <p class="product-description"><%= train.description %></p>
               
-              <div class="product-meta">
-                <span class="meta-item">🏭 Brand</span>
-                <span class="meta-item">📏 Scale</span>
-                <span class="meta-item">⚙️ Category</span>
-              </div>
+              <%- include('../partials/meta-item.ejs', { item: train }) %>
 
               <div class="product-footer">
                 <span class="product-price">$<%= train.price %></span>

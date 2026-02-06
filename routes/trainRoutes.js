@@ -20,5 +20,5 @@ trainRoutes
 trainRoutes
   .route('/:trainID/update')
   .get(getUpdateFormController)
-  .put(putUpdateFormController);
+  .put(adminPassword, putUpdateFormController);
 trainRoutes.get('/:trainID', getTrainByIdController);
