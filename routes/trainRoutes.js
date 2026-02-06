@@ -7,6 +7,7 @@ import {
   putUpdateFormController,
   getAddFormController,
   postAddFormController,
+  deleteTrainController,
 } from '../controllers/trainControllers.js';
 import { adminPassword } from '../middleware/adminPassword.js';
 
@@ -22,3 +23,4 @@ trainRoutes
   .get(getUpdateFormController)
   .put(adminPassword, putUpdateFormController);
 trainRoutes.get('/:trainID', getTrainByIdController);
+trainRoutes.delete('/:trainID/delete', deleteTrainController);
