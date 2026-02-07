@@ -9,7 +9,7 @@ import {
   postAddFormController,
   deleteTrackController,
 } from '../controllers/trackControllers.js';
-import { adminPassword } from '../middleware/adminPassword.js';
+import { adminPassword } from '../middleware/auth.js';
 
 export const trackRoutes = Router();
 
@@ -21,6 +21,6 @@ trackRoutes
 trackRoutes
   .route('/:trackID/update')
   .get(getUpdateFormController)
-  .put(putUpdateFormController);
+  .put(adminPassword, putUpdateFormController);
 trackRoutes.get('/:trackID', getTrackByIdController);
 trackRoutes.delete('/:trackID/delete', deleteTrackController);

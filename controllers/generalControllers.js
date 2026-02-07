@@ -22,5 +22,6 @@ export function getReturnsPage(req, res) {
 
 export async function getBrandsPage(req, res) {
   const brands = await getAllBrands();
+
   res.render('pages/brands', { brands });
 }

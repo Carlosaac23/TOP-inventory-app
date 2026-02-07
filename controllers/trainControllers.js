@@ -1,7 +1,7 @@
 import {
   getAllItems,
   getItemById,
-  getAllItemCategories,
+  getCategoriesByType,
   getAllScales,
   getAllBrands,
   updateItemById,
@@ -14,20 +14,26 @@ export async function getAllTrainsController(req, res) {
 
   try {
     const trains = await getAllItems('trains', { category, scale, brand });
-    const categories = await getAllItemCategories('train');
+    const categories = await getCategoriesByType('train');
     const scales = await getAllScales();
     const brands = await getAllBrands();
 
-    res.render('trains/index', {
-      trains,
+    res.render('pages/items-collection', {
+      itemNamePlural: 'Trains',
+      itemNameSingular: 'Train',
+      path: 'trains',
+      items: trains,
       categories,
       scales,
       brands,
       filters: { category, scale, brand },
     });
   } catch (error) {
-    console.error(error);
-    res.status(500).send('Error loading trains');
+    console.error('Controller error:', error);
+    res.status(500).render('error', {
+      message: 'Unable to load trains',
+      error: process.env.NODE_ENV === 'development' ? error : {},
+    });
   }
 }
 
@@ -35,14 +41,33 @@ export async function getTrainByIdController(req, res) {
   try {
     const { trainID } = req.params;
     const train = await getItemById('trains', trainID);
-    const categories = await getAllItemCategories('train');
+
+    if (!train) {
+      return res.status(404).render('error', {
+        message: 'Train not found',
+        error: { details: `No train found with ID ${trainID}` },
+      });
+    }
+
+    const categories = await getCategoriesByType('train');
     const scales = await getAllScales();
     const brands = await getAllBrands();
 
-    res.render('trains/infoTrain', { train, scales, brands, categories });
+    res.render('pages/item-info', {
+      itemNamePlural: 'Trains',
+      itemNameSingular: 'Train',
+      path: 'trains',
+      item: train,
+      categories,
+      scales,
+      brands,
+    });
   } catch (error) {
-    console.error(error);
-    res.status(500).send('Error getting train');
+    console.error('Controller error:', error);
+    res.status(500).render('error', {
+      message: 'Unable to load train',
+      error: process.env.NODE_ENV === 'development' ? error : {},
+    });
   }
 }
 
@@ -50,13 +75,17 @@ export async function getUpdateFormController(req, res) {
   try {
     const { trainID } = req.params;
     const train = await getItemById('trains', trainID);
-    const categories = await getAllItemCategories('train');
-    const scales = await getAllScales();
-    const brands = await getAllBrands();
 
     if (!train) {
-      return res.status(404).send('Train not found');
+      return res.status(404).render('error', {
+        message: 'Train not found',
+        error: { details: `Cannot update - train ${trainID} does not exist` },
+      });
     }
+
+    const categories = await getCategoriesByType('train');
+    const scales = await getAllScales();
+    const brands = await getAllBrands();
 
     res.render('forms/updateForm', {
       title: 'Train',
@@ -67,8 +96,11 @@ export async function getUpdateFormController(req, res) {
       brands,
     });
   } catch (error) {
-    console.error(error);
-    res.status(500).send('Error getting train');
+    console.error('Controller error:', error);
+    res.status(500).render('error', {
+      message: 'Error loading update form',
+      error: process.env.NODE_ENV === 'development' ? error : {},
+    });
   }
 }
 
@@ -100,19 +132,25 @@ export async function putUpdateFormController(req, res) {
     });
 
     if (!updatedTrain) {
-      return res.status(404).send('Train not found');
+      return res.status(404).render('error', {
+        message: 'Train not found',
+        error: { details: `Cannot update - train ${trainID} does not exist` },
+      });
     }
 
     return res.redirect(`/trains/${trainID}`);
   } catch (error) {
-    console.error(error);
-    return res.status(500).send('Error updating train');
+    console.error('Controller error:', error);
+    res.status(500).render('error', {
+      message: 'Error updating train',
+      error: process.env.NODE_ENV === 'development' ? error : {},
+    });
   }
 }
 
 export async function getAddFormController(req, res) {
   try {
-    const categories = await getAllItemCategories('train');
+    const categories = await getCategoriesByType('train');
     const scales = await getAllScales();
     const brands = await getAllBrands();
 
@@ -124,8 +162,11 @@ export async function getAddFormController(req, res) {
       brands,
     });
   } catch (error) {
-    console.error(error);
-    res.status(500).send('Error loading add train form');
+    console.error('Controller error:', error);
+    res.status(500).render('error', {
+      message: 'Error loading add form',
+      error: process.env.NODE_ENV === 'development' ? error : {},
+    });
   }
 }
 
@@ -142,6 +183,7 @@ export async function postAddFormController(req, res) {
       stock_quantity,
       image_url,
     } = req.body;
+
     await addItem('trains', {
       model,
       model_id,
@@ -156,8 +198,11 @@ export async function postAddFormController(req, res) {
 
     return res.redirect('/trains');
   } catch (error) {
-    console.error(error);
-    return res.status(500).send('Error adding new train');
+    console.error('Controller error:', error);
+    res.status(500).render('error', {
+      message: 'Error adding train',
+      error: process.env.NODE_ENV === 'development' ? error : {},
+    });
   }
 }
 
@@ -165,9 +210,13 @@ export async function deleteTrainController(req, res) {
   try {
     const { trainID } = req.params;
     await deleteItemById('trains', trainID);
+
     return res.redirect('/trains');
   } catch (error) {
-    console.error(error);
-    res.status(500).send('Error deleting train');
+    console.error('Controller error:', error);
+    res.status(500).render('error', {
+      message: 'Error deleting train',
+      error: process.env.NODE_ENV === 'development' ? error : {},
+    });
   }
 }
