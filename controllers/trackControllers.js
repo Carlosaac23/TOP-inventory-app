@@ -1,7 +1,7 @@
 import {
   getAllItems,
   getItemById,
-  getAllItemCategories,
+  getCategoriesByType,
   getAllBrands,
   getAllScales,
   updateItemById,
@@ -14,20 +14,26 @@ export async function getAllTracksController(req, res) {
 
   try {
     const tracks = await getAllItems('tracks', { category, scale, brand });
-    const categories = await getAllItemCategories('track');
+    const categories = await getCategoriesByType('track');
     const scales = await getAllScales();
     const brands = await getAllBrands();
 
-    res.render('tracks/index', {
-      tracks,
+    res.render('pages/items-collection', {
+      itemNamePlural: 'Tracks',
+      itemNameSingular: 'Track',
+      path: 'tracks',
+      items: tracks,
+      categories,
       scales,
       brands,
-      categories,
       filters: { category, scale, brand },
     });
   } catch (error) {
-    console.error(error);
-    res.status(500).send('Error loading tracks');
+    console.error('Controller error:', error);
+    res.status(500).render('error', {
+      message: 'Unable to load tracks',
+      error: process.env.NODE_ENV === 'development' ? error : {},
+    });
   }
 }
 
@@ -35,14 +41,33 @@ export async function getTrackByIdController(req, res) {
   try {
     const { trackID } = req.params;
     const track = await getItemById('tracks', trackID);
-    const categories = await getAllItemCategories('track');
+
+    if (!track) {
+      return res.status(404).render('error', {
+        message: 'Track not found',
+        error: { details: `No track found with ID ${trackID}` },
+      });
+    }
+
+    const categories = await getCategoriesByType('track');
     const scales = await getAllScales();
     const brands = await getAllBrands();
 
-    res.render('tracks/infoTrack', { track, categories, scales, brands });
+    res.render('pages/item-info', {
+      itemNamePlural: 'Tracks',
+      itemNameSingular: 'Track',
+      path: 'tracks',
+      item: track,
+      categories,
+      scales,
+      brands,
+    });
   } catch (error) {
-    console.error(error);
-    res.status(500).send('Error getting track');
+    console.error('Controller error:', error);
+    res.status(500).render('error', {
+      message: 'Unable to load track',
+      error: process.env.NODE_ENV === 'development' ? error : {},
+    });
   }
 }
 
@@ -50,13 +75,17 @@ export async function getUpdateFormController(req, res) {
   try {
     const { trackID } = req.params;
     const track = await getItemById('tracks', trackID);
-    const categories = await getAllItemCategories('track');
-    const scales = await getAllScales();
-    const brands = await getAllBrands();
 
     if (!track) {
-      return res.status(404).send('Track not found');
+      return res.status(404).render('error', {
+        message: 'Track not found',
+        error: { details: `Cannot update - track ${trackID} does not exist` },
+      });
     }
+
+    const categories = await getCategoriesByType('track');
+    const scales = await getAllScales();
+    const brands = await getAllBrands();
 
     res.render('forms/updateForm', {
       title: 'Track',
@@ -67,8 +96,11 @@ export async function getUpdateFormController(req, res) {
       brands,
     });
   } catch (error) {
-    console.error(error);
-    res.status(500).send('Error getting track');
+    console.error('Controller error:', error);
+    res.status(500).render('error', {
+      message: 'Error loading update form',
+      error: process.env.NODE_ENV === 'development' ? error : {},
+    });
   }
 }
 
@@ -100,19 +132,25 @@ export async function putUpdateFormController(req, res) {
     });
 
     if (!updatedTrack) {
-      return res.status(404).send('Track not found');
+      return res.status(404).render('error', {
+        message: 'Wagon not found',
+        error: { details: `Cannot update - track ${trackID} does not exist` },
+      });
     }
 
     return res.redirect(`/tracks/${trackID}`);
   } catch (error) {
-    console.error(error);
-    res.status(500).send('Error updating track');
+    console.error('Controller error:', error);
+    res.status(500).render('error', {
+      message: 'Error updating track',
+      error: process.env.NODE_ENV === 'development' ? error : {},
+    });
   }
 }
 
 export async function getAddFormController(req, res) {
   try {
-    const categories = await getAllItemCategories('track');
+    const categories = await getCategoriesByType('track');
     const scales = await getAllScales();
     const brands = await getAllBrands();
 
@@ -124,8 +162,11 @@ export async function getAddFormController(req, res) {
       brands,
     });
   } catch (error) {
-    console.error(error);
-    res.status(500).send('Error loading add track form');
+    console.error('Controller error:', error);
+    res.status(500).render('error', {
+      message: 'Error loading add form',
+      error: process.env.NODE_ENV === 'development' ? error : {},
+    });
   }
 }
 
@@ -156,8 +197,11 @@ export async function postAddFormController(req, res) {
 
     return res.redirect('/tracks');
   } catch (error) {
-    console.error(error);
-    res.status(500).send('Error adding new track');
+    console.error('Controller error:', error);
+    res.status(500).render('error', {
+      message: 'Error adding track',
+      error: process.env.NODE_ENV === 'development' ? error : {},
+    });
   }
 }
 
@@ -167,7 +211,10 @@ export async function deleteTrackController(req, res) {
     await deleteItemById('tracks', trackID);
     return res.redirect('/tracks');
   } catch (error) {
-    console.error(error);
-    res.status(500).send('Error deleting track');
+    console.error('Controller error:', error);
+    res.status(500).render('error', {
+      message: 'Error deleting track',
+      error: process.env.NODE_ENV === 'development' ? error : {},
+    });
   }
 }

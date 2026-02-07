@@ -1,7 +1,7 @@
 import {
   getAllItems,
   getItemById,
-  getAllItemCategories,
+  getCategoriesByType,
   getAllScales,
   getAllBrands,
   updateItemById,
@@ -14,20 +14,26 @@ export async function getAllWagonsController(req, res) {
 
   try {
     const wagons = await getAllItems('wagons', { category, scale, brand });
-    const categories = await getAllItemCategories('wagon');
+    const categories = await getCategoriesByType('wagon');
     const scales = await getAllScales();
     const brands = await getAllBrands();
 
-    res.render('wagons/index', {
-      wagons,
+    res.render('pages/items-collection', {
+      itemNamePlural: 'Wagons',
+      itemNameSingular: 'Wagon',
+      path: 'wagons',
+      items: wagons,
       categories,
       scales,
       brands,
       filters: { category, scale, brand },
     });
   } catch (error) {
-    console.error(error);
-    res.status(500).send('Error loading wagons');
+    console.error('Controller error:', error);
+    res.status(500).render('error', {
+      message: 'Unable to load wagons',
+      error: process.env.NODE_ENV === 'development' ? error : {},
+    });
   }
 }
 
@@ -35,14 +41,33 @@ export async function getWagonByIdController(req, res) {
   try {
     const { wagonID } = req.params;
     const wagon = await getItemById('wagons', wagonID);
-    const categories = await getAllItemCategories('wagon');
+
+    if (!wagon) {
+      return res.status(404).render('error', {
+        message: 'Wagon not found',
+        error: { details: `No wagon found with ID ${wagonID}` },
+      });
+    }
+
+    const categories = await getCategoriesByType('wagon');
     const scales = await getAllScales();
     const brands = await getAllBrands();
 
-    res.render('wagons/infoWagon', { wagon, scales, brands, categories });
+    res.render('pages/item-info', {
+      itemNamePlural: 'Wagons',
+      itemNameSingular: 'Wagon',
+      path: 'wagons',
+      item: wagon,
+      categories,
+      scales,
+      brands,
+    });
   } catch (error) {
-    console.error(error);
-    res.status(500).send('Error getting wagon');
+    console.error('Controller error:', error);
+    res.status(500).render('error', {
+      message: 'Unable to load wagon',
+      error: process.env.NODE_ENV === 'development' ? error : {},
+    });
   }
 }
 
@@ -50,13 +75,17 @@ export async function getUpdateFormController(req, res) {
   try {
     const { wagonID } = req.params;
     const wagon = await getItemById('wagons', wagonID);
-    const categories = await getAllItemCategories('wagon');
-    const scales = await getAllScales();
-    const brands = await getAllBrands();
 
     if (!wagon) {
-      return res.status(404).send('Wagon not found');
+      return res.status(404).render('error', {
+        message: 'Wagon not found',
+        error: { details: `Cannot update - wagon ${wagonID} does not exist` },
+      });
     }
+
+    const categories = await getCategoriesByType('wagon');
+    const scales = await getAllScales();
+    const brands = await getAllBrands();
 
     res.render('forms/updateForm', {
       title: 'Wagon',
@@ -67,8 +96,11 @@ export async function getUpdateFormController(req, res) {
       brands,
     });
   } catch (error) {
-    console.error(error);
-    res.status(500).send('Error getting wagon');
+    console.error('Controller error:', error);
+    res.status(500).render('error', {
+      message: 'Error loading update form',
+      error: process.env.NODE_ENV === 'development' ? error : {},
+    });
   }
 }
 
@@ -100,19 +132,25 @@ export async function putUpdateFormController(req, res) {
     });
 
     if (!updatedWagon) {
-      return res.status(404).send('Wagon not found');
+      return res.status(404).render('error', {
+        message: 'Wagon not found',
+        error: { details: `Cannot update - wagon ${wagonID} does not exist` },
+      });
     }
 
     return res.redirect(`/wagons/${wagonID}`);
   } catch (error) {
-    console.error(error);
-    res.status(500).send('Error updating wagon');
+    console.error('Controller error:', error);
+    res.status(500).render('error', {
+      message: 'Error updating wagon',
+      error: process.env.NODE_ENV === 'development' ? error : {},
+    });
   }
 }
 
 export async function getAddFormController(req, res) {
   try {
-    const categories = await getAllItemCategories('wagon');
+    const categories = await getCategoriesByType('wagon');
     const scales = await getAllScales();
     const brands = await getAllBrands();
 
@@ -124,8 +162,11 @@ export async function getAddFormController(req, res) {
       brands,
     });
   } catch (error) {
-    console.error(error);
-    res.status(500).send('Error loading add wagon form');
+    console.error('Controller error:', error);
+    res.status(500).render('error', {
+      message: 'Error loading add form',
+      error: process.env.NODE_ENV === 'development' ? error : {},
+    });
   }
 }
 
@@ -142,6 +183,7 @@ export async function postAddFormController(req, res) {
       stock_quantity,
       image_url,
     } = req.body;
+
     await addItem('wagons', {
       model,
       model_id,
@@ -156,8 +198,11 @@ export async function postAddFormController(req, res) {
 
     return res.redirect('/wagons');
   } catch (error) {
-    console.error(error);
-    res.status(500).send('Error adding new wagon');
+    console.error('Controller error:', error);
+    res.status(500).render('error', {
+      message: 'Error adding wagon',
+      error: process.env.NODE_ENV === 'development' ? error : {},
+    });
   }
 }
 
@@ -165,9 +210,13 @@ export async function deleteWagonController(req, res) {
   try {
     const { wagonID } = req.params;
     await deleteItemById('wagons', wagonID);
+
     return res.redirect('/wagons');
   } catch (error) {
-    console.error(error);
-    res.status(500).send('Error deleting wagon');
+    console.error('Controller error:', error);
+    res.status(500).render('error', {
+      message: 'Error deleting wagon',
+      error: process.env.NODE_ENV === 'development' ? error : {},
+    });
   }
 }
