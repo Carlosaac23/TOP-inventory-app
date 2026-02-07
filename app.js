@@ -5,6 +5,7 @@ import { fileURLToPath } from 'url';
 import express from 'express';
 import methodOverride from 'method-override';
 
+import { checkDatabaseHealth } from './db/healthCheck.js';
 import { generalRoute } from './routes/generalRoutes.js';
 import { trackRoutes } from './routes/trackRoutes.js';
 import { trainRoutes } from './routes/trainRoutes.js';
@@ -31,9 +32,31 @@ app.use('/trains', trainRoutes);
 app.use('/wagons', wagonRoutes);
 app.use('/tracks', trackRoutes);
 
-app.listen(PORT, error => {
-  if (error) {
-    throw error;
+async function startServer() {
+  try {
+    console.log('Starting Supabase Models Servers...\n');
+
+    const dbHealthy = await checkDatabaseHealth();
+
+    if (!dbHealthy) {
+      console.warn('WARNING: Database is not connected!');
+      console.warn('Server will start but queries will fail\n');
+    }
+
+    app.listen(PORT, error => {
+      if (error) {
+        console.error('Failed to start server:', error);
+        throw error;
+      }
+      console.log(`Server running at http://localhost:${PORT}`);
+      console.log(
+        `Database status: ${dbHealthy ? 'Connected' : 'Not connected'}\n`
+      );
+    });
+  } catch (error) {
+    console.error('Fatal error starting server:', error);
+    process.exit(1);
   }
-  console.log(`Working on http://localhost:${PORT}`);
-});
+}
+
+startServer();
