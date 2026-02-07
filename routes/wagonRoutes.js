@@ -9,7 +9,7 @@ import {
   postAddFormController,
   deleteWagonController,
 } from '../controllers/wagonControllers.js';
-import { adminPassword } from '../middleware/adminPassword.js';
+import { adminPassword } from '../middleware/auth.js';
 
 export const wagonRoutes = Router();
 
@@ -21,6 +21,6 @@ wagonRoutes
 wagonRoutes
   .route('/:wagonID/update')
   .get(getUpdateFormController)
-  .put(putUpdateFormController);
+  .put(adminPassword, putUpdateFormController);
 wagonRoutes.get('/:wagonID', getWagonByIdController);
 wagonRoutes.delete('/:wagonID/delete', deleteWagonController);

@@ -9,7 +9,7 @@ import {
   postAddFormController,
   deleteTrainController,
 } from '../controllers/trainControllers.js';
-import { adminPassword } from '../middleware/adminPassword.js';
+import { adminPassword } from '../middleware/auth.js';
 
 export const trainRoutes = Router();
 
