@@ -1,17 +1,20 @@
 <div class="product-meta">
   <span class="meta-item">
-    <% brands.forEach(brand => { %>
-      <p><%= brand.id === item.brand_id ? brand.name : '' %></p>
-    <% }) %>
+    <% const brand = brands.find(brand => brand.id === item.brand_id); %>
+    <% if (brand) { %>
+      <p><%= brand.name %></p>
+    <% } %>
   </span>
   <span class="meta-item">
-    <% scales.forEach(scale => { %>
-      <p><%= scale.id === item.scale_id ? scale.scale : '' %></p>
-    <% }) %>
+    <% const scale = scales.find(scale => scale.id === item.scale_id); %>
+    <% if (scale) { %>
+      <p><%= scale.scale %></p>
+    <% } %>
   </span>
   <span class="meta-item">
-    <% categories.forEach(category => { %>
-      <p><%= category.id === item.category_id ? category.name : '' %></p>
-    <% }) %>
+    <% const category = categories.find(category => category.id === item.category_id); %>
+    <% if (category) { %>
+      <p><%= category.name %></p>
+    <% } %>
   </span>
 </div>
