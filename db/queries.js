@@ -1,6 +1,13 @@
 import { pool } from './pool.js';
+import {
+  validateTableName,
+  validateCategoryType,
+  safeQuerySingle,
+  safeQueryMany,
+} from './safeQuery.js';
 
 export async function getAllItems(table, { category, scale, brand }) {
+  validateTableName(table);
   const values = [];
   const where = [];
 
@@ -22,33 +29,47 @@ export async function getAllItems(table, { category, scale, brand }) {
     sql += ` WHERE ${where.join(' AND ')}`;
   }
 
-  const { rows } = await pool.query(sql, values);
-  return rows;
+  return await safeQueryMany(
+    () => pool.query(sql, values),
+    `getAllItems(${table})`
+  );
 }
 
 export async function getItemById(table, itemID) {
-  const { rows } = await pool.query(`SELECT * FROM ${table} WHERE id = $1`, [
-    itemID,
-  ]);
-  return rows[0];
+  validateTableName(table);
+
+  return await safeQuerySingle(
+    () => pool.query(`SELECT * FROM ${table} WHERE id = $1`, [itemID]),
+    `getItemById(${table}, ${itemID})`
+  );
 }
 
-export async function getAllItemCategories(item) {
-  const { rows } = await pool.query(`SELECT * FROM ${item}_categories`);
-  return rows;
+export async function getCategoriesByType(item) {
+  validateCategoryType(item);
+
+  return await safeQueryMany(
+    () => pool.query(`SELECT * FROM ${item}_categories`),
+    `getAllItemsCategories(${item})`
+  );
 }
 
 export async function getAllScales() {
-  const { rows } = await pool.query('SELECT * FROM scales');
-  return rows;
+  return await safeQueryMany(
+    () => pool.query('SELECT * FROM scales'),
+    'getAllScales()'
+  );
 }
 
 export async function getAllBrands() {
-  const { rows } = await pool.query('SELECT * FROM brands');
-  return rows;
+  return await safeQueryMany(
+    () => pool.query('SELECT * FROM brands'),
+    'getAllBrands()'
+  );
 }
 
 export async function updateItemById(table, itemID, updates) {
+  validateTableName(table);
+
   const {
     model,
     model_id,
@@ -60,9 +81,11 @@ export async function updateItemById(table, itemID, updates) {
     stock_quantity,
     image_url,
   } = updates;
-  console.log('DB:', image_url);
-  const { rows } = await pool.query(
-    `UPDATE ${table}
+
+  return await safeQuerySingle(
+    () =>
+      pool.query(
+        `UPDATE ${table}
      SET model = $1,
          model_id = $2,
          description = $3,
@@ -74,23 +97,26 @@ export async function updateItemById(table, itemID, updates) {
          image_url = $9
      WHERE id = $10
      RETURNING *`,
-    [
-      model,
-      model_id,
-      description,
-      category_id,
-      scale_id,
-      brand_id,
-      price,
-      stock_quantity,
-      image_url,
-      itemID,
-    ]
+        [
+          model,
+          model_id,
+          description,
+          category_id,
+          scale_id,
+          brand_id,
+          price,
+          stock_quantity,
+          image_url,
+          itemID,
+        ]
+      ),
+    `updateItemById(${table}, ${itemID})`
   );
-  return rows[0];
 }
 
 export async function addItem(table, itemData) {
+  validateTableName(table);
+
   const {
     model,
     model_id,
@@ -102,25 +128,33 @@ export async function addItem(table, itemData) {
     stock_quantity,
     image_url,
   } = itemData;
-  const { rows } = await pool.query(
-    `INSERT INTO ${table} (model, model_id, description, category_id, scale_id, brand_id, price, stock_quantity, image_url)
+
+  return await safeQuerySingle(
+    () =>
+      pool.query(
+        `INSERT INTO ${table} (model, model_id, description, category_id, scale_id, brand_id, price, stock_quantity, image_url)
      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
      RETURNING *`,
-    [
-      model,
-      model_id,
-      description,
-      category_id,
-      scale_id,
-      brand_id,
-      price,
-      stock_quantity,
-      image_url,
-    ]
+        [
+          model,
+          model_id,
+          description,
+          category_id,
+          scale_id,
+          brand_id,
+          price,
+          stock_quantity,
+          image_url,
+        ]
+      ),
+    `addItem(${table})`
   );
-  return rows[0];
 }
 
 export async function deleteItemById(table, itemID) {
-  await pool.query(`DELETE FROM ${table} WHERE id = $1`, [itemID]);
+  validateTableName(table);
+  return await safeQueryMany(
+    () => pool.query(`DELETE FROM ${table} WHERE id = $1`, [itemID]),
+    `deleteItemById(${table}, ${itemID})`
+  );
 }
