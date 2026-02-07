@@ -8,8 +8,8 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "dev": "node --watch --env-file-if-exists=.env app.js",
-    "populate-db": "node --env-file-if-exists=.env db/populateDB.js",
+    "dev": "node --watch --env-file-if-exists=.env.local app.js",
+    "populate-db": "node --env-file-if-exists=.env.local db/populateDB.js",
     "lint": "oxlint",
     "lint:fix": "oxlint --fix",
     "fmt": "oxfmt",
