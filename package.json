@@ -8,8 +8,8 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "dev": "node --watch --env-file-if-exists=.env.local app.js",
-    "populate-db": "node --env-file-if-exists=.env.local db/populateDB.js",
+    "dev": "node --watch --env-file-if-exists=.env app.js",
+    "populate-db": "node --env-file-if-exists=.env db/populateDB.js",
     "lint": "oxlint",
     "lint:fix": "oxlint --fix",
     "fmt": "oxfmt",
@@ -17,14 +17,14 @@
     "ejslint": "ejslint views"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.95.3",
     "ejs": "^4.0.1",
     "express": "^5.2.1",
-    "method-override": "^3.0.0",
-    "pg": "^8.18.0"
+    "method-override": "^3.0.0"
   },
   "devDependencies": {
     "oxfmt": "^0.28.0",
     "oxlint": "^1.43.0"
   },
-  "packageManager": "pnpm@10.28.2"
+  "packageManager": "pnpm@10.29.3+sha512.498e1fb4cca5aa06c1dcf2611e6fafc50972ffe7189998c409e90de74566444298ffe43e6cd2acdc775ba1aa7cc5e092a8b7054c811ba8c5770f84693d33d2dc"
 }
