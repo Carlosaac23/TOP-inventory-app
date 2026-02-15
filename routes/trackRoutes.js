@@ -3,10 +3,10 @@ import { Router } from 'express';
 import {
   getAllTracksController,
   getTrackByIdController,
-  getUpdateFormController,
-  putUpdateFormController,
   getAddFormController,
   postAddFormController,
+  getUpdateFormController,
+  putUpdateFormController,
   deleteTrackController,
 } from '../controllers/trackControllers.js';
 import { adminPassword } from '../middleware/auth.js';
