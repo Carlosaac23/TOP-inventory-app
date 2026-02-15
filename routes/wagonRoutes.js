@@ -3,10 +3,10 @@ import { Router } from 'express';
 import {
   getAllWagonsController,
   getWagonByIdController,
-  getUpdateFormController,
-  putUpdateFormController,
   getAddFormController,
   postAddFormController,
+  getUpdateFormController,
+  putUpdateFormController,
   deleteWagonController,
 } from '../controllers/wagonControllers.js';
 import { adminPassword } from '../middleware/auth.js';

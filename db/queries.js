@@ -1,160 +1,72 @@
-import { pool } from './pool.js';
-import {
-  validateTableName,
-  validateCategoryType,
-  safeQuerySingle,
-  safeQueryMany,
-} from './safeQuery.js';
+import { supabase } from './client.js';
 
 export async function getAllItems(table, { category, scale, brand }) {
-  validateTableName(table);
-  const values = [];
-  const where = [];
+  let query = supabase.from(table).select('*');
 
-  if (category) {
-    values.push(category);
-    where.push(`category_id = $${values.length}`);
+  if (category != null && category !== '') {
+    query = query.eq('category_id', category);
   }
-  if (scale) {
-    values.push(scale);
-    where.push(`scale_id = $${values.length}`);
+  if (scale != null && scale !== '') {
+    query = query.eq('scale_id', scale);
   }
-  if (brand) {
-    values.push(brand);
-    where.push(`brand_id = $${values.length}`);
+  if (brand != null && brand !== '') {
+    query = query.eq('brand_id', brand);
   }
 
-  let sql = `SELECT * FROM ${table}`;
-  if (where.length) {
-    sql += ` WHERE ${where.join(' AND ')}`;
-  }
-
-  return await safeQueryMany(
-    () => pool.query(sql, values),
-    `getAllItems(${table})`
-  );
-}
-
-export async function getItemById(table, itemID) {
-  validateTableName(table);
-
-  return await safeQuerySingle(
-    () => pool.query(`SELECT * FROM ${table} WHERE id = $1`, [itemID]),
-    `getItemById(${table}, ${itemID})`
-  );
+  const { data, error } = await query;
+  if (error) throw new Error(`getAllItems(${table}) failed: ${error.message}`);
+  return data;
 }
 
 export async function getCategoriesByType(item) {
-  validateCategoryType(item);
-
-  return await safeQueryMany(
-    () => pool.query(`SELECT * FROM ${item}_categories`),
-    `getAllItemsCategories(${item})`
-  );
+  const { data, error } = await supabase.from(`${item}_categories`).select('*');
+  if (error) throw new Error(error);
+  return data;
 }
 
-export async function getAllScales() {
-  return await safeQueryMany(
-    () => pool.query('SELECT * FROM scales'),
-    'getAllScales()'
-  );
+export async function getScalesAndBrands() {
+  const [scalesRes, brandsRes] = await Promise.all([
+    supabase.from('scales').select('*'),
+    supabase.from('brands').select('*'),
+  ]);
+
+  if (scalesRes.error)
+    throw new Error(`scales query failed: ${scalesRes.error.message}`);
+  if (brandsRes.error)
+    throw new Error(`brands query failed: ${brandsRes.error.message}`);
+
+  return {
+    scales: scalesRes.data,
+    brands: brandsRes.data,
+  };
 }
 
-export async function getAllBrands() {
-  return await safeQueryMany(
-    () => pool.query('SELECT * FROM brands'),
-    'getAllBrands()'
-  );
-}
-
-export async function updateItemById(table, itemID, updates) {
-  validateTableName(table);
-
-  const {
-    model,
-    model_id,
-    description,
-    category_id,
-    scale_id,
-    brand_id,
-    price,
-    stock_quantity,
-    image_url,
-  } = updates;
-
-  return await safeQuerySingle(
-    () =>
-      pool.query(
-        `UPDATE ${table}
-     SET model = $1,
-         model_id = $2,
-         description = $3,
-         category_id = $4, 
-         scale_id = $5, 
-         brand_id = $6,
-         price = $7,
-         stock_quantity = $8,
-         image_url = $9
-     WHERE id = $10
-     RETURNING *`,
-        [
-          model,
-          model_id,
-          description,
-          category_id,
-          scale_id,
-          brand_id,
-          price,
-          stock_quantity,
-          image_url,
-          itemID,
-        ]
-      ),
-    `updateItemById(${table}, ${itemID})`
-  );
+export async function getItemById(table, itemID) {
+  const { data, error } = await supabase
+    .from(table)
+    .select()
+    .eq('id', itemID)
+    .maybeSingle();
+  if (error) throw new Error(`error getting train: ${error.message}`);
+  return data;
 }
 
 export async function addItem(table, itemData) {
-  validateTableName(table);
+  await supabase.from(table).insert(itemData);
+}
 
-  const {
-    model,
-    model_id,
-    description,
-    category_id,
-    scale_id,
-    brand_id,
-    price,
-    stock_quantity,
-    image_url,
-  } = itemData;
+export async function updateItemById(table, itemID, updates) {
+  const { data, error } = await supabase
+    .from(table)
+    .update(updates)
+    .eq('id', itemID)
+    .select()
+    .maybeSingle();
 
-  return await safeQuerySingle(
-    () =>
-      pool.query(
-        `INSERT INTO ${table} (model, model_id, description, category_id, scale_id, brand_id, price, stock_quantity, image_url)
-     VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
-     RETURNING *`,
-        [
-          model,
-          model_id,
-          description,
-          category_id,
-          scale_id,
-          brand_id,
-          price,
-          stock_quantity,
-          image_url,
-        ]
-      ),
-    `addItem(${table})`
-  );
+  if (error) throw new Error(`error updating item: ${error.message}`);
+  return data;
 }
 
 export async function deleteItemById(table, itemID) {
-  validateTableName(table);
-  return await safeQueryMany(
-    () => pool.query(`DELETE FROM ${table} WHERE id = $1`, [itemID]),
-    `deleteItemById(${table}, ${itemID})`
-  );
+  await supabase.from(table).delete().eq('id', itemID);
 }

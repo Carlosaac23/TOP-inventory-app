@@ -1,4 +1,4 @@
-import { getAllBrands } from '../db/queries.js';
+import { getScalesAndBrands } from '../db/queries.js';
 
 export function getHomepage(req, res) {
   res.render('index');
@@ -21,7 +21,7 @@ export function getReturnsPage(req, res) {
 }
 
 export async function getBrandsPage(req, res) {
-  const brands = await getAllBrands();
+  const { _scales, brands } = await getScalesAndBrands();
 
   res.render('pages/brands', { brands });
 }

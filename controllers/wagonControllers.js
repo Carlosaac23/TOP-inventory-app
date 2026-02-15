@@ -2,10 +2,9 @@ import {
   getAllItems,
   getItemById,
   getCategoriesByType,
-  getAllScales,
-  getAllBrands,
-  updateItemById,
+  getScalesAndBrands,
   addItem,
+  updateItemById,
   deleteItemById,
 } from '../db/queries.js';
 
@@ -15,8 +14,7 @@ export async function getAllWagonsController(req, res) {
   try {
     const wagons = await getAllItems('wagons', { category, scale, brand });
     const categories = await getCategoriesByType('wagon');
-    const scales = await getAllScales();
-    const brands = await getAllBrands();
+    const { scales, brands } = await getScalesAndBrands();
 
     res.render('pages/items-collection', {
       itemNamePlural: 'Wagons',
@@ -50,8 +48,7 @@ export async function getWagonByIdController(req, res) {
     }
 
     const categories = await getCategoriesByType('wagon');
-    const scales = await getAllScales();
-    const brands = await getAllBrands();
+    const { scales, brands } = await getScalesAndBrands();
 
     res.render('pages/item-info', {
       itemNamePlural: 'Wagons',
@@ -71,6 +68,63 @@ export async function getWagonByIdController(req, res) {
   }
 }
 
+export async function getAddFormController(req, res) {
+  try {
+    const categories = await getCategoriesByType('wagon');
+    const { scales, brands } = await getScalesAndBrands();
+
+    res.render('forms/addForm', {
+      title: 'Wagon',
+      path: 'wagons',
+      categories,
+      scales,
+      brands,
+    });
+  } catch (error) {
+    console.error('Controller error:', error);
+    res.status(500).render('error', {
+      message: 'Error loading add form',
+      error: process.env.NODE_ENV === 'development' ? error : {},
+    });
+  }
+}
+
+export async function postAddFormController(req, res) {
+  try {
+    const {
+      model,
+      model_id,
+      description,
+      category_id,
+      scale_id,
+      brand_id,
+      price,
+      stock_quantity,
+      image_url,
+    } = req.body;
+
+    await addItem('wagons', {
+      model,
+      model_id,
+      description,
+      category_id: Number(category_id),
+      scale_id: Number(scale_id),
+      brand_id: Number(brand_id),
+      price: Number(price),
+      stock_quantity: Number(stock_quantity),
+      image_url,
+    });
+
+    return res.redirect('/wagons');
+  } catch (error) {
+    console.error('Controller error:', error);
+    res.status(500).render('error', {
+      message: 'Error adding wagon',
+      error: process.env.NODE_ENV === 'development' ? error : {},
+    });
+  }
+}
+
 export async function getUpdateFormController(req, res) {
   try {
     const { wagonID } = req.params;
@@ -84,8 +138,7 @@ export async function getUpdateFormController(req, res) {
     }
 
     const categories = await getCategoriesByType('wagon');
-    const scales = await getAllScales();
-    const brands = await getAllBrands();
+    const { scales, brands } = await getScalesAndBrands();
 
     res.render('forms/updateForm', {
       title: 'Wagon',
@@ -143,64 +196,6 @@ export async function putUpdateFormController(req, res) {
     console.error('Controller error:', error);
     res.status(500).render('error', {
       message: 'Error updating wagon',
-      error: process.env.NODE_ENV === 'development' ? error : {},
-    });
-  }
-}
-
-export async function getAddFormController(req, res) {
-  try {
-    const categories = await getCategoriesByType('wagon');
-    const scales = await getAllScales();
-    const brands = await getAllBrands();
-
-    res.render('forms/addForm', {
-      title: 'Wagon',
-      path: 'wagons',
-      categories,
-      scales,
-      brands,
-    });
-  } catch (error) {
-    console.error('Controller error:', error);
-    res.status(500).render('error', {
-      message: 'Error loading add form',
-      error: process.env.NODE_ENV === 'development' ? error : {},
-    });
-  }
-}
-
-export async function postAddFormController(req, res) {
-  try {
-    const {
-      model,
-      model_id,
-      description,
-      category_id,
-      scale_id,
-      brand_id,
-      price,
-      stock_quantity,
-      image_url,
-    } = req.body;
-
-    await addItem('wagons', {
-      model,
-      model_id,
-      description,
-      category_id: Number(category_id),
-      scale_id: Number(scale_id),
-      brand_id: Number(brand_id),
-      price: Number(price),
-      stock_quantity: Number(stock_quantity),
-      image_url,
-    });
-
-    return res.redirect('/wagons');
-  } catch (error) {
-    console.error('Controller error:', error);
-    res.status(500).render('error', {
-      message: 'Error adding wagon',
       error: process.env.NODE_ENV === 'development' ? error : {},
     });
   }
