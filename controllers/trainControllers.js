@@ -1,217 +1,32 @@
 import {
-  getAllItems,
-  getItemById,
-  getCategoriesByType,
-  getScalesAndBrands,
-  addItem,
-  updateItemById,
-  deleteItemById,
-} from '../db/queries.js';
+  createGetAllItemsController,
+  createGetItemByIdController,
+  createGetAddFormController,
+  createPostAddFormController,
+  createGetUpdateFormController,
+  createPutUpdateFormController,
+  createDeleteItemController,
+} from './generalControllers.js';
 
-export async function getAllTrainsController(req, res) {
-  const { category, scale, brand } = req.query;
+const trainObject = {
+  path: 'trains',
+  type: 'train',
+  singular: 'Train',
+  plural: 'Trains',
+};
 
-  try {
-    const trains = await getAllItems('trains', { category, scale, brand });
-    const categories = await getCategoriesByType('train');
-    const { scales, brands } = await getScalesAndBrands();
+export const getAllTrainsController = createGetAllItemsController(trainObject);
 
-    res.render('pages/items-collection', {
-      itemNamePlural: 'Trains',
-      itemNameSingular: 'Train',
-      path: 'trains',
-      items: trains,
-      categories,
-      scales,
-      brands,
-      filters: { category, scale, brand },
-    });
-  } catch (error) {
-    console.error('Controller error:', error);
-    res.status(500).render('error', {
-      message: 'Unable to load trains',
-      error: process.env.NODE_ENV === 'development' ? error : {},
-    });
-  }
-}
+export const getTrainByIdController = createGetItemByIdController(trainObject);
 
-export async function getTrainByIdController(req, res) {
-  try {
-    const { trainID } = req.params;
-    const train = await getItemById('trains', trainID);
+export const getAddFormController = createGetAddFormController(trainObject);
 
-    if (!train) {
-      return res.status(404).render('error', {
-        message: 'Train not found',
-        error: { details: `No train found with ID ${trainID}` },
-      });
-    }
+export const postAddFormController = createPostAddFormController(trainObject);
 
-    const categories = await getCategoriesByType('train');
-    const { scales, brands } = await getScalesAndBrands();
+export const getUpdateFormController =
+  createGetUpdateFormController(trainObject);
 
-    res.render('pages/item-info', {
-      itemNamePlural: 'Trains',
-      itemNameSingular: 'Train',
-      path: 'trains',
-      item: train,
-      categories,
-      scales,
-      brands,
-    });
-  } catch (error) {
-    console.error('Controller error:', error);
-    res.status(500).render('error', {
-      message: 'Unable to load train',
-      error: process.env.NODE_ENV === 'development' ? error : {},
-    });
-  }
-}
+export const putUpdateFormController =
+  createPutUpdateFormController(trainObject);
 
-export async function getAddFormController(req, res) {
-  try {
-    const categories = await getCategoriesByType('train');
-    const { scales, brands } = await getScalesAndBrands();
-
-    res.render('forms/addForm', {
-      title: 'Train',
-      path: 'trains',
-      categories,
-      scales,
-      brands,
-    });
-  } catch (error) {
-    console.error('Controller error:', error);
-    res.status(500).render('error', {
-      message: 'Error loading add form',
-      error: process.env.NODE_ENV === 'development' ? error : {},
-    });
-  }
-}
-
-export async function postAddFormController(req, res) {
-  try {
-    const {
-      model,
-      model_id,
-      description,
-      category_id,
-      scale_id,
-      brand_id,
-      price,
-      stock_quantity,
-      image_url,
-    } = req.body;
-
-    await addItem('trains', {
-      model,
-      model_id,
-      description,
-      category_id: Number(category_id),
-      scale_id: Number(scale_id),
-      brand_id: Number(brand_id),
-      price: Number(price),
-      stock_quantity: Number(stock_quantity),
-      image_url,
-    });
-
-    return res.redirect('/trains');
-  } catch (error) {
-    console.error('Controller error:', error);
-    res.status(500).render('error', {
-      message: 'Error adding train',
-      error: process.env.NODE_ENV === 'development' ? error : {},
-    });
-  }
-}
-
-export async function getUpdateFormController(req, res) {
-  try {
-    const { trainID } = req.params;
-    const train = await getItemById('trains', trainID);
-
-    if (!train) {
-      return res.status(404).render('error', {
-        message: 'Train not found',
-        error: { details: `Cannot update - train ${trainID} does not exist` },
-      });
-    }
-
-    const categories = await getCategoriesByType('train');
-    const { scales, brands } = await getScalesAndBrands();
-
-    res.render('forms/updateForm', {
-      title: 'Train',
-      item: train,
-      path: 'trains',
-      categories,
-      scales,
-      brands,
-    });
-  } catch (error) {
-    console.error('Controller error:', error);
-    res.status(500).render('error', {
-      message: 'Error loading update form',
-      error: process.env.NODE_ENV === 'development' ? error : {},
-    });
-  }
-}
-
-export async function putUpdateFormController(req, res) {
-  try {
-    const { trainID } = req.params;
-    const {
-      model,
-      model_id,
-      description,
-      category_id,
-      scale_id,
-      brand_id,
-      price,
-      stock_quantity,
-      image_url,
-    } = req.body;
-
-    const updatedTrain = await updateItemById('trains', trainID, {
-      model,
-      model_id,
-      description,
-      category_id: Number(category_id),
-      scale_id: Number(scale_id),
-      brand_id: Number(brand_id),
-      price: Number(price),
-      stock_quantity: Number(stock_quantity),
-      image_url,
-    });
-
-    if (!updatedTrain) {
-      return res.status(404).render('error', {
-        message: 'Train not found',
-        error: { details: `Cannot update - train ${trainID} does not exist` },
-      });
-    }
-
-    return res.redirect(`/trains/${trainID}`);
-  } catch (error) {
-    console.error('Controller error:', error);
-    res.status(500).render('error', {
-      message: 'Error updating train',
-      error: process.env.NODE_ENV === 'development' ? error : {},
-    });
-  }
-}
-
-export async function deleteTrainController(req, res) {
-  try {
-    const { trainID } = req.params;
-    await deleteItemById('trains', trainID);
-
-    return res.redirect('/trains');
-  } catch (error) {
-    console.error('Controller error:', error);
-    res.status(500).render('error', {
-      message: 'Error deleting train',
-      error: process.env.NODE_ENV === 'development' ? error : {},
-    });
-  }
-}
+export const deleteTrainController = createDeleteItemController(trainObject);

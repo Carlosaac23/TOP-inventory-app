@@ -1,0 +1,220 @@
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: var(--spacing-xl) var(--spacing-md);
+}
+
+/* Page Header */
+.page-header {
+  margin-bottom: var(--spacing-xl);
+  text-align: center;
+}
+
+.page-title {
+  font-size: 4rem;
+  font-weight: 700;
+  margin-bottom: var(--spacing-sm);
+  color: var(--primary);
+}
+
+.page-subtitle {
+  font-size: 1.8rem;
+  color: var(--text-secondary);
+}
+
+/* Filter Bar */
+.filter-bar {
+  background: var(--card-bg);
+  padding: var(--spacing-md);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  margin-bottom: var(--spacing-lg);
+  display: flex;
+  gap: var(--spacing-md);
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.filter-bar div {
+  display: flex;
+  gap: var(--spacing-md);
+  align-items: center;
+}
+
+.filter-bar select,
+.filter-bar input {
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 1.4rem;
+  font-family: inherit;
+  background: white;
+  min-width: 150px;
+}
+
+.filter-bar select:focus,
+.filter-bar input:focus {
+  outline: none;
+  border-color: var(--secondary);
+}
+
+.filter-label {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+/* Product Grid */
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: var(--spacing-lg);
+  margin-bottom: var(--spacing-xl);
+}
+
+/* Product Card */
+.product-card {
+  background: var(--card-bg);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+  transition:
+    transform 0.175s ease,
+    box-shadow 0.175s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-xl);
+}
+
+.product-image {
+  width: 100%;
+  height: 200px;
+  object-fit: contain;
+  background: var(--card-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 6rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.product-image img {
+  width: 100%;
+  object-fit: contain;
+}
+
+.info-image {
+  height: 200%;
+}
+
+.product-image::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 50%;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.3), transparent);
+}
+
+.product-badge {
+  position: absolute;
+  top: var(--spacing-sm);
+  right: var(--spacing-sm);
+  background: var(--accent);
+  color: white;
+  padding: 0.4rem 1rem;
+  border-radius: var(--radius-sm);
+  font-size: 1.2rem;
+  font-weight: 600;
+  z-index: 10;
+}
+
+.product-badge.in-stock {
+  background: var(--success);
+}
+
+.product-badge.low-stock {
+  background: var(--warning);
+}
+
+.product-content {
+  padding: var(--spacing-md);
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.product-btns {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.product-category {
+  font-size: 1.2rem;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: var(--spacing-xs);
+  font-weight: 600;
+}
+
+.product-name {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: var(--spacing-xs);
+  color: var(--primary);
+}
+
+.product-model {
+  font-size: 1.3rem;
+  color: var(--text-secondary);
+  margin-bottom: var(--spacing-sm);
+}
+
+.product-description {
+  font-size: 1.4rem;
+  color: var(--text-secondary);
+  margin-bottom: var(--spacing-md);
+  flex: 1;
+}
+
+.product-meta {
+  display: flex;
+  gap: var(--spacing-sm);
+  font-size: 1.3rem;
+  margin-bottom: var(--spacing-md);
+  flex-wrap: wrap;
+}
+
+.meta-item {
+  background: var(--background);
+  padding: 0.4rem 0.8rem;
+  border-radius: var(--radius-sm);
+  color: var(--text-secondary);
+}
+
+.product-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: var(--spacing-md);
+  border-top: 1px solid var(--border);
+}
+
+.product-price {
+  font-size: 2.4rem;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.product-stock {
+  font-size: 1.3rem;
+  color: var(--text-secondary);
+}

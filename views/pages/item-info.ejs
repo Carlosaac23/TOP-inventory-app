@@ -4,7 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title><%= item.model %> - <%= itemNameSingular %> Details</title>
-  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="/main.css" />
+  <link rel="stylesheet" href="/header.css" />
+  <link rel="stylesheet" href="/footer.css" />
+  <link rel="stylesheet" href="/cards.css" />
 </head>
 <body>
   <%- include('../partials/header.ejs') %>
@@ -29,7 +32,7 @@
             <a href="<%= item.id %>/update" style="text-decoration: none; color: inherit">Edit</a>
           </button>
         </div>
-        <p class="product-model">Model #<%= item.model_id %></p>
+        <p class="product-model">Item No. <%= item.model_id %></p>
         <p class="product-description"><%= item.description %></p>
 
         <%- include('../partials/meta-items.ejs', { item }) %>

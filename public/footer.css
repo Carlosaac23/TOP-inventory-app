@@ -1,0 +1,52 @@
+/* Footer */
+.footer {
+  background: var(--primary);
+  color: white;
+  padding: var(--spacing-xl) 0;
+  margin-top: var(--spacing-xl);
+}
+
+/* Sticky footer for content-light pages */
+.page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.page .container {
+  flex: 1;
+}
+
+.page .footer {
+  margin-top: auto;
+}
+
+.footer-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--spacing-md);
+  text-align: center;
+}
+
+.footer-links {
+  display: flex;
+  justify-content: center;
+  gap: var(--spacing-lg);
+  margin-bottom: var(--spacing-md);
+  flex-wrap: wrap;
+}
+
+.footer-links a {
+  color: white;
+  text-decoration: none;
+  transition: color 0.175s ease;
+}
+
+.footer-links a:hover {
+  color: var(--accent);
+}
+
+.footer-text {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 1.4rem;
+}
