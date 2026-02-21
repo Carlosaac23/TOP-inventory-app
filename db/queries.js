@@ -15,11 +15,12 @@ export async function getAllItems(table, { category, scale, brand }) {
 
   const { data, error } = await query;
   if (error) throw new Error(`getAllItems(${table}) failed: ${error.message}`);
-  return data;
+  return data || [];
 }
 
 export async function getCategoriesByType(item) {
   const { data, error } = await supabase.from(`${item}_categories`).select('*');
+
   if (error) throw new Error(error);
   return data;
 }
@@ -47,7 +48,8 @@ export async function getItemById(table, itemID) {
     .select()
     .eq('id', itemID)
     .maybeSingle();
-  if (error) throw new Error(`error getting train: ${error.message}`);
+
+  if (error) throw new Error(`error getting item: ${error.message}`);
   return data;
 }
 
