@@ -6,10 +6,9 @@
   "license": "ISC",
   "author": "",
   "type": "module",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
-    "dev": "node --watch --env-file-if-exists=.env app.js",
-    "populate-db": "node --env-file-if-exists=.env db/populateDB.js",
+    "dev": "nodemon app.js",
     "lint": "oxlint",
     "lint:fix": "oxlint --fix",
     "fmt": "oxfmt",
@@ -17,12 +16,14 @@
     "ejslint": "ejslint views"
   },
   "dependencies": {
-    "@supabase/supabase-js": "^2.95.3",
+    "dotenv": "^17.3.1",
     "ejs": "^4.0.1",
     "express": "^5.2.1",
-    "method-override": "^3.0.0"
+    "method-override": "^3.0.0",
+    "pg": "^8.20.0"
   },
   "devDependencies": {
+    "nodemon": "^3.1.14",
     "oxfmt": "^0.28.0",
     "oxlint": "^1.43.0"
   },
