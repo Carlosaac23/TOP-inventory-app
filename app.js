@@ -33,8 +33,6 @@ app.use('/tracks', trackRoutes);
 
 async function startServer() {
   try {
-    console.log('Starting Supabase Models Servers...\n');
-
     app.listen(PORT, error => {
       if (error) {
         console.error('Failed to start server:', error);
